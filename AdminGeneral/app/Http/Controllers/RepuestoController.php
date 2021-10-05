@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Repuestos;
 use Illuminate\Http\Request;
-use App\Models\Cuenta;
 
-class CuentaController extends Controller
+class RepuestoController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,8 +14,8 @@ class CuentaController extends Controller
      */
     public function index()
     {
-        $cuentas = Cuenta::all();
-        return $cuentas;
+        $repuestos = Repuestos::all();
+        return $repuestos;
     }
 
     /**
@@ -36,12 +36,15 @@ class CuentaController extends Controller
      */
     public function store(Request $request)
     {
-        $cuenta = new Cuenta();
-        $cuenta->codigo =  $request->codigo;
-        $cuenta->nombre =  $request->nombre;
-        $cuenta->tipo =  $request->tipo;
+        $repuesto = new Repuestos();
+        $repuesto->nombre =  $request->nombre;
+        $repuesto->clasificacion =  $request->clasificacion;
+        $repuesto->descripcion =  $request->descripcion;
+        $repuesto->precio =  $request->precio;
+        $repuesto->cantidad =  $request->cantidad;
+        $repuesto->marca =  $request->marca;
 
-        $cuenta->save();
+        $repuesto->save();
     }
 
     /**
@@ -75,13 +78,16 @@ class CuentaController extends Controller
      */
     public function update(Request $request)
     {
-        $cuenta = Cuenta::findOrFail($request->id);
-        $cuenta->codigo =  $request->codigo;
-        $cuenta->nombre =  $request->nombre;
-        $cuenta->tipo =  $request->tipo;
+        $repuesto = Repuestos::findOrFail($request->id);
+        $repuesto->nombre =  $request->nombre;
+        $repuesto->clasificacion =  $request->clasificacion;
+        $repuesto->descripcion =  $request->descripcion;
+        $repuesto->precio =  $request->precio;
+        $repuesto->cantidad =  $request->cantidad;
+        $repuesto->marca =  $request->marca;
 
-        $cuenta->save();
-        return $cuenta;
+        $repuesto->save();
+        return $repuesto;
     }
 
     /**
@@ -92,7 +98,7 @@ class CuentaController extends Controller
      */
     public function destroy($request)
     {
-        $cuenta = Cuenta::destroy($request->id);
-        return $cuenta;
+        $repuesto = Repuestos::destroy($request->id);
+        return $repuesto;
     }
 }

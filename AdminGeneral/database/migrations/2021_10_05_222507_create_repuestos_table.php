@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateCuentaTable extends Migration
+class CreateRepuestosTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,15 @@ class CreateCuentaTable extends Migration
      */
     public function up()
     {
-        Schema::create('cuenta', function (Blueprint $table) {
+        Schema::create('repuestos', function (Blueprint $table) {
             $table->id();
-            $table->string('codigo');
-            $table->string('nombre');
-            $table->string('tipo');
             $table->timestamps();
+            $table->string('nombre');
+            $table->string('clasificacion');
+            $table->string('descripcion');
+            $table->float('precio');
+            $table->integer('cantidad');
+            $table->string('marca');
         });
     }
 
@@ -29,6 +32,6 @@ class CreateCuentaTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('cuenta');
+        Schema::dropIfExists('repuestos');
     }
 }
