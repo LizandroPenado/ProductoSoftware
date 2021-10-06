@@ -2,14 +2,18 @@ import React, { Component } from "react";
 import DataTable from "../datatable/DataTable";
 import Botones from "../datatable/Botones";
 import { Button } from "react-bootstrap";
-import Swal from "sweetalert2";
-import axios from "axios";
-import ModalCU from "../modal/ModalCU";
 
-class Cuenta extends Component {
-  constructor(props) {
+
+const data = [
+  { id: "1", nombre: "Llanta", clasificacion: "Caucho"},
+  { id: "2", nombre: "Carburador", clasificacion: "Hierro"},
+  { id: "3", nombre: "Escape", clasificacion: "Tubo"},
+ ];
+
+class Repuesto extends Component {
+  /*constructor(props) {
     super(props);
-    this.state = {
+     this.state = {
       cuentas: [],
       repuestos: [],
       modalInsertar: false,
@@ -20,10 +24,10 @@ class Cuenta extends Component {
         tipo: "",
         tipoModal: "",
       },
-    };
-  }
+    }; 
+  }*/
 
-  componentDidMount() {
+  /* componentDidMount() {
     axios
       .get("http://127.0.0.1:8001/api/cuentas/")
       .then((response) => {
@@ -42,33 +46,10 @@ class Cuenta extends Component {
           title: "Por el momento no hay conexión con la base de datos",
         });
       });
-  }
+  } */
 
   render() {
     const columns = [
-      {
-        name: "codigo",
-        label: "Código",
-      },
-      {
-        name: "nombre",
-        label: "Cuenta",
-      },
-      {
-        name: "tipo",
-        label: "Tipo",
-      },
-      {
-        name: "acciones",
-        label: "Acciónes",
-        options: {
-          customBodyRender: (value, tableMeta, updateValue) => {
-            return <Botones />;
-          },
-        },
-      },
-    ];
-    const columns1 = [
       {
         name: "id",
         label: "Código",
@@ -106,19 +87,13 @@ class Cuenta extends Component {
         </div>
         <DataTable
           titulo="Catalogo"
-          noRegistro="No hay registro de cuentas"
-          columnas={columns}
-          datos={this.state.cuentas}
-        />
-        <DataTable
-          titulo="Catalogo"
           noRegistro="No hay registro de repuestos"
-          columnas={columns1}
-          datos={this.state.repuestos}
+          columnas={columns}
+          datos={data}
         />
       </>
     );
   }
 }
 
-export default Cuenta;
+export default Repuesto;

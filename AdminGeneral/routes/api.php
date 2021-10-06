@@ -18,7 +18,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::get('/repuestos', 'App\Http\Controllers\RepuestoController@index'); //Mostrar todos los registros
-Route::post('/repuestos', 'App\Http\Controllers\RepuestoController@store'); //Crear registro
-Route::put('/repuestos/{id}', 'App\Http\Controllers\RepuestoController@update'); //Actualizar registro
-Route::delete('/repuestos/{id}', 'App\Http\Controllers\RepuestoController@destroy'); //Eliminar registro 
+//Ejemplos para rutas
+/* Route::get('/repuestos', 'App\Http\Controllers\RepuestoController@index');
+Route::post('/repuestos', 'App\Http\Controllers\RepuestoController@store'); 
+Route::put('/repuestos/{id}', 'App\Http\Controllers\RepuestoController@update'); 
+Route::delete('/repuestos/{id}', 'App\Http\Controllers\RepuestoController@destroy');  */
