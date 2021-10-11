@@ -10,7 +10,8 @@ function App() {
   return (
     <main /* className={classes.content} */>
       <Router>
-        <Navbar />
+        <Navbar  />
+        <div className="pb-5"></div>
         <Switch>
           <Route path="/" exact component={Home} />
           <Route path="/login" component={Login} />

@@ -48,7 +48,7 @@ export default function dataTable(props) {
     },
   };
   return (
-    <Container className="pt-5">
+    <Container >
       <Row className="justify-content-md-center">
         <Col xs lg="2"></Col>
         <Col>

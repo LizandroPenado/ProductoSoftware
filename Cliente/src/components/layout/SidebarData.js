@@ -4,13 +4,13 @@ import PersonIcon from '@mui/icons-material/Person';
 
 export const SidebarData = [
   {
-    title: 'Home',
+    title: 'Inicio',
     path: '/',
     icon: <HomeIcon />,
     cName: 'nav-text'
   },
   {
-    title: 'Login',
+    title: 'Inicio sesión',
     path: '/login',
     icon: <PersonIcon />,
     cName: 'nav-text'
