@@ -1,32 +1,32 @@
-import React, { Component } from "react";
-import { Form  } from "react-bootstrap";
+import React from "react";
 import { Modal, ModalBody, ModalFooter, ModalHeader } from "reactstrap";
 
-class Home extends Component {
-  constructor(props) {
-    super(props);
-  }
-  render() {
-    return (
-      <Modal isOpen={this.props.abrir} centered>
+export default function modalCU(props) {
+  return (
+    <>
+      {/* Modal crear y actualizar */}
+      <Modal backdrop="static" isOpen={props.abrirCrear} centered>
         <ModalHeader style={{ display: "block" }}>
-          {this.props.tipoModal === "insertar" ? (
-            <span>Crear {this.props.titulo}</span>
+          {props.tipoModal === "insertar" ? (
+            <span>Agregar {props.titulo}</span>
           ) : (
-            <span>Actualizar {this.props.titulo}</span>
+            <span>Actualizar {props.titulo}</span>
           )}
         </ModalHeader>
-        <ModalBody>
-          <Form.Group>
-            {this.props.formulario}
-          </Form.Group>
-          <ModalFooter>
-            {this.props.pieModal}
-          </ModalFooter>
-        </ModalBody>
+        <ModalBody>{props.formulario}</ModalBody>
+        <ModalFooter>{props.pieModalCrear}</ModalFooter>
       </Modal>
-    );
-  }
-}
 
-export default Home;
+      {/* Modal para eliminar */}
+      <Modal backdrop="static" isOpen={props.abrirEliminar} centered>
+        <ModalHeader style={{ display: "block" }}>
+          <span>Eliminar {props.titulo}</span>
+        </ModalHeader>
+        <ModalBody>
+          ¿Esta seguro de eliminar el {props.titulo} seleccionado?
+        </ModalBody>
+        <ModalFooter>{props.pieModalEliminar}</ModalFooter>
+      </Modal>
+    </>
+  );
+}
