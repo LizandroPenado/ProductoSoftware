@@ -162,7 +162,6 @@ class Repuesto extends Component {
     ];
     return (
       <>
-        <div className="pt-3"></div>
         <DataTable
           agregar={
             <Button
