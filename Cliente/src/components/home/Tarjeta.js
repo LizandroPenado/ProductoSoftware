@@ -3,7 +3,7 @@ import { Card } from "react-bootstrap";
 
 export default function tarjeta(props) {
   return (
-    <Card>
+    <Card className="tarjeta">
       <Card.Img variant="top" src={props.url} className="card-imagen" />
       <Card.Body>
         <Card.Title>{props.repuesto}</Card.Title>

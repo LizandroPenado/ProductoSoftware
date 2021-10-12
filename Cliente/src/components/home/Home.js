@@ -60,9 +60,6 @@ class Home extends Component {
                   name="precio"
                 ></Form.Control>
               </Form.Group>
-              <div className="pt-4 text-center">
-                <Button variant="secondary">Comparar precios</Button>
-              </div>
             </Col>
             <Col sm={9}>
               <Row>
@@ -75,7 +72,18 @@ class Home extends Component {
                     cantidad="4"
                     marca="Toyota"
                     establecimiento="Super repuestos"
-                    botones={<Button variant="primary">Contactar</Button>}
+                    botones={
+                      <>
+                        <Row>
+                          <Col className="pt-2">
+                            <Button variant="primary">Contactar</Button>
+                          </Col>
+                          <Col className="pt-2">
+                            <Button variant="secondary">Comparar</Button>
+                          </Col>
+                        </Row>
+                      </>
+                    }
                   />
                 </Col>
                 <Col>
@@ -87,7 +95,18 @@ class Home extends Component {
                     cantidad="4"
                     marca="Toyota"
                     establecimiento="Mega repuestos"
-                    botones={<Button variant="primary">Contactar</Button>}
+                    botones={
+                      <>
+                        <Row>
+                          <Col className="pt-2">
+                            <Button variant="primary">Contactar</Button>
+                          </Col>
+                          <Col className="pt-2">
+                            <Button variant="secondary">Comparar</Button>
+                          </Col>
+                        </Row>
+                      </>
+                    }
                   />
                 </Col>
                 <Col>
@@ -99,7 +118,18 @@ class Home extends Component {
                     cantidad="2"
                     marca="Toyota"
                     establecimiento="Hiper repuestos"
-                    botones={<Button variant="primary">Contactar</Button>}
+                    botones={
+                      <>
+                        <Row>
+                          <Col className="pt-2">
+                            <Button variant="primary">Contactar</Button>
+                          </Col>
+                          <Col className="pt-2">
+                            <Button variant="secondary">Comparar</Button>
+                          </Col>
+                        </Row>
+                      </>
+                    }
                   />
                 </Col>
               </Row>
