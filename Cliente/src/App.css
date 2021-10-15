@@ -16,18 +16,7 @@
   }
 }
 
-.menu-busqueda{
-  background-color:rgb(202, 212, 212);
-}
-
-.contenedor-repuesto{
-  background-color: rgb(234, 241, 241);
-}
-
-.card-imagen{
-  height: 150px;
-}
-
-.tarjeta{
-  width: 260px;
+.logo{
+  width:"50"; 
+  height:"50";
 }
