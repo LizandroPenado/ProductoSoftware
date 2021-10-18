@@ -6,6 +6,8 @@ import Navbar from "./components/layout/Navbar";
 import Home from "./components/home/Home";
 import Login from "./components/login/Login";
 import Repuesto from "./components/repuesto/Repuesto";
+import Inventario from "./components/inventario/Inventario";
+import Establecimiento from "./components/establecimiento/Establecimiento";
 
 function App() {
   return (
@@ -18,6 +20,8 @@ function App() {
           <Route path="/login" component={Login} />
           <Route path="/repuesto" component={Repuesto} />
           <Route path="/usuario" component={Repuesto} />
+          <Route path="/inventario" component={Inventario} />
+          <Route path="/establecimiento" component={Establecimiento} />
         </Switch>
       </Router>
       <footer className="fixed-bottom">
