@@ -1,22 +1,22 @@
-import React from "react";
-import { Card } from "react-bootstrap";
+import React from 'react';
+import { Card } from 'react-bootstrap';
 
 export default function tarjeta(props) {
   return (
-    <Card>
+    <Card className="tarjeta">
       <Card.Img variant="top" src={props.url} className="card-imagen" />
       <Card.Body>
-        <Card.Title>{props.repuesto}</Card.Title>
+        <Card.Title className="titulo-repuesto">{props.repuesto}</Card.Title>
         <Card.Text>
-          Descripción: {props.descripcion}
+          <strong className="font-weight-bold">Descripción:</strong> {props.descripcion}
           <br />
-          Precio: $ {props.precio}
+          <strong className="font-weight-bold">Precio:</strong> $ {props.precio}
           <br />
-          Existencias: {props.cantidad} unidades
+          <strong className="font-weight-bold">Existencias:</strong> {props.cantidad} unidades
           <br />
-          Marca: {props.marca}
+          <strong className="font-weight-bold"> Marca:</strong> {props.marca}
           <br />
-          Establecimiento: {props.establecimiento}
+          <strong className="font-weight-bold">Establecimiento:</strong> {props.establecimiento}
         </Card.Text>
       </Card.Body>
       <Card.Footer>{props.botones}</Card.Footer>
