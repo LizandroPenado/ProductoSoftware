@@ -1,6 +1,7 @@
 import React from 'react';
 import HomeIcon from '@mui/icons-material/Home';
 import PersonIcon from '@mui/icons-material/Person';
+import BuildIcon from '@mui/icons-material/Build';
 
 export const SidebarData = [
   {
@@ -18,12 +19,18 @@ export const SidebarData = [
   {
     title: 'Repuesto',
     path: '/repuesto',
-    icon: <PersonIcon />,
+    icon: <BuildIcon />,
     cName: 'nav-text'
   },
   {
     title: 'Usuario',
     path: '/usuario',
+    icon: <PersonIcon />,
+    cName: 'nav-text'
+  },
+  {
+    title: 'Chat',
+    path: '/chat',
     icon: <PersonIcon />,
     cName: 'nav-text'
   },

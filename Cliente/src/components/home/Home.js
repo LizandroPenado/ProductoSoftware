@@ -72,7 +72,7 @@ class Home extends Component {
             </Col>
             <Col sm={9} className="">
               <Row className="">
-                <Col className="pb-2 pt-2 d-flex justify-content-center alig-items-center">
+                <Col className="pb-3 pt-3 d-flex justify-content-center alig-items-center">
                   <Tarjeta
                     url={Imagen1}
                     repuesto="Llantas pesadas"
@@ -95,7 +95,7 @@ class Home extends Component {
                     }
                   />
                 </Col>
-                <Col className="pb-2 pt-2 d-flex justify-content-center alig-items-center">
+                <Col className="pb-3 pt-3 d-flex justify-content-center alig-items-center">
                   <Tarjeta
                     url={Imagen2}
                     repuesto="Llanta livianas"
@@ -118,7 +118,7 @@ class Home extends Component {
                     }
                   />
                 </Col>
-                <Col className="pb-2 pt-2 d-flex justify-content-center alig-items-center">
+                <Col className="pb-3 pt-3 d-flex justify-content-center alig-items-center">
                   <Tarjeta
                     url={Imagen3}
                     repuesto="Llanta para moto"

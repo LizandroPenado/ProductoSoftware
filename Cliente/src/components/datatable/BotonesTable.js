@@ -12,17 +12,11 @@ export default function botones(props) {
           <Edit></Edit>
         </Button>
       </Tooltip>
-      <span className="pl-2">
-        <Tooltip title="Eliminar">
-          <Button
-            size="sm"
-            variant="outline-danger"
-            onClick={props.eliminar}
-          >
-            <Delete></Delete>
-          </Button>
-        </Tooltip>
-      </span>
+      <Tooltip title="Eliminar">
+        <Button size="sm" variant="outline-danger" onClick={props.eliminar}>
+          <Delete></Delete>
+        </Button>
+      </Tooltip>
     </>
   );
 }

@@ -6,6 +6,7 @@ import Navbar from "./components/layout/Navbar";
 import Home from "./components/home/Home";
 import Login from "./components/login/Login";
 import Repuesto from "./components/repuesto/Repuesto";
+import Chat from "./components/chat/Inicio";
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
           <Route path="/login" component={Login} />
           <Route path="/repuesto" component={Repuesto} />
           <Route path="/usuario" component={Repuesto} />
+          <Route path="/chat" component={Chat} />
         </Switch>
       </Router>
       <footer className="fixed-bottom">
