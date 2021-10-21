@@ -19,12 +19,6 @@ export const SidebarData = [
     cName: 'nav-text'
   },
   {
-    title: 'Usuario',
-    path: '/usuario',
-    icon: <PersonIcon />,
-    cName: 'nav-text'
-  },
-  {
     title: 'Establecimiento',
     path: '/establecimiento',
     icon: <CarRepairIcon />,
@@ -42,4 +36,17 @@ export const SidebarData = [
     icon: <LocalGroceryStoreIcon/>,
     cName: 'nav-text'
   },
+  {
+    title: 'Usuario',
+    path: '/usuario',
+    icon: <PersonIcon/>,
+    cName: 'nav-text'
+  },  
+  {
+    title: 'Rol',
+    path: '/rol',
+    icon: <LocalGroceryStoreIcon/>,
+    cName: 'nav-text'
+  },  
+
 ];

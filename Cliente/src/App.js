@@ -8,6 +8,8 @@ import Login from "./components/login/Login";
 import Repuesto from "./components/repuesto/Repuesto";
 import Inventario from "./components/inventario/Inventario";
 import Establecimiento from "./components/establecimiento/Establecimiento";
+import Rol from "./components/rol/Rol";
+import Usuario from "./components/usuario/Usuario";
 
 function App() {
   return (
@@ -19,10 +21,10 @@ function App() {
           <Route path="/" exact component={Home} />
           <Route path="/login" component={Login} />
           <Route path="/repuesto" component={Repuesto} />
-          <Route path="/usuario" component={Repuesto} />
           <Route path="/inventario" component={Inventario} />
           <Route path="/establecimiento" component={Establecimiento} />
-        </Switch>
+          <Route path="/usuario" component={Usuario} />
+          <Route path="/rol" component={Rol} />        </Switch>
       </Router>
       <footer className="fixed-bottom">
         <Typography variant="body2" color="textSecondary" align="center">
