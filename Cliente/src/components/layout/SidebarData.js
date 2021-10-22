@@ -4,7 +4,6 @@ import PersonIcon from '@mui/icons-material/Person';
 import CarRepairIcon from '@mui/icons-material/CarRepair';
 import ListIcon from '@mui/icons-material/List';
 import LocalGroceryStoreIcon from '@mui/icons-material/LocalGroceryStore';
-import BuildIcon from '@mui/icons-material/Build';
 
 export const SidebarData = [
   {

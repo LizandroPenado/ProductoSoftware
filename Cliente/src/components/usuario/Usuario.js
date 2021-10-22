@@ -17,7 +17,7 @@ const data = [
     name: "Roberto Paz",
     email: "pr17017@ues.edu.sv",
     rol: "Usuario",
-  },  
+  },
   {
     name: "Noel Renderos",
     email: "rm17039@ues.edu.sv",
@@ -35,6 +35,7 @@ class Usuario extends Component {
       form: {
         name: "",
         email: "",
+        password: "",
         rol: "",
       },
     };
@@ -78,7 +79,6 @@ class Usuario extends Component {
         name: usuario[0],
         email: usuario[1],
         rol: usuario[2],
-
       },
     });
   };
@@ -136,8 +136,8 @@ class Usuario extends Component {
             >
               Agregar
             </Button>
-          } 
-          titulo="Inventario de usuarios"
+          }
+          titulo="Usuarios"
           noRegistro="No hay registro de usuarios"
           columnas={columns}
           datos={data}
@@ -149,7 +149,7 @@ class Usuario extends Component {
           formulario={
             <>
               <Form.Group>
-              <Form.Label>Nombre</Form.Label>
+                <Form.Label>Nombre</Form.Label>
                 <Form.Control
                   type="text"
                   id="name"
@@ -161,7 +161,7 @@ class Usuario extends Component {
                 />
               </Form.Group>
               <Form.Group>
-              <Form.Label>Email</Form.Label>
+                <Form.Label>Email</Form.Label>
                 <Form.Control
                   type="text"
                   id="email"
@@ -172,8 +172,24 @@ class Usuario extends Component {
                   onChange={this.handleChange}
                 />
               </Form.Group>
+              {this.state.tipoModal === "insertar" ? (
+                <Form.Group>
+                  <Form.Label>Contraseña</Form.Label>
+                  <Form.Control
+                    type="password"
+                    id="password"
+                    name="password"
+                    placeholder="*******"
+                    required={true}
+                    value={form ? form.password : ""}
+                    onChange={this.handleChange}
+                  />
+                </Form.Group>
+              ) : (
+                <></>
+              )}
               <Form.Group>
-              <Form.Label>Rol</Form.Label>
+                <Form.Label>Rol</Form.Label>
                 <Form.Control
                   as="select"
                   id="rol"

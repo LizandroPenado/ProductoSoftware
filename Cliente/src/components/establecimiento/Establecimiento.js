@@ -11,14 +11,18 @@ const data = [
   {
     nombre: "Didea Repuestos",
     telefono: "7452-2748",
+    encargado: "Juan Cruz",
     departamento: "San Salvador",
     municipio: "San Salvador",
+    direccion: "Av. Norte calle 25 etapa 4 edificio 11",
   },
   {
     nombre: "Impresa Repuestos",
     telefono: "7452-2750",
+    encargado: "Dayana Ortíz",
     departamento: "La Paz",
     municipio: "Zacatecoluca",
+    direccion: "Av. Orriente calle 1 etapa 1 edificio 1",
   },
 ];
 
@@ -32,8 +36,10 @@ class Establecimiento extends Component {
       form: {
         nombre: "",
         telefono: "",
+        encargado: "",
         departamento: "",
         municipio: "",
+        direccion: "",
       },
     };
   }
@@ -75,8 +81,10 @@ class Establecimiento extends Component {
       form: {
         nombre: establecimiento[0],
         telefono: establecimiento[1],
-        departamento: establecimiento[2],
-        municipio: establecimiento[3],
+        encargado: establecimiento[2],
+        departamento: establecimiento[3],
+        municipio: establecimiento[4],
+        direccion: establecimiento[5],
       },
     });
   };
@@ -97,6 +105,10 @@ class Establecimiento extends Component {
         label: "Teléfono",
       },
       {
+        name: "encargado",
+        label: "Encargado",
+      },
+      {
         name: "departamento",
         label: "Departamento",
       },
@@ -105,21 +117,25 @@ class Establecimiento extends Component {
         label: "Municipio",
       },
       {
+        name: "direccion",
+        label: "Dirección",
+      },
+      {
         name: "acciones",
         label: "Acciónes",
         options: {
           customBodyRender: (value, tableMeta, updateValue) => {
             return (
-              <BotonesTable
-                editar={() => {
-                  this.seleccionEstablecimiento(tableMeta.rowData);
-                  this.modalInsertar();
-                }}
-                eliminar={() => {
-                  this.seleccionEstablecimiento(tableMeta.rowData);
-                  this.setState({ modalEliminar: true });
-                }}
-              />
+                <BotonesTable
+                  editar={() => {
+                    this.seleccionEstablecimiento(tableMeta.rowData);
+                    this.modalInsertar();
+                  }}
+                  eliminar={() => {
+                    this.seleccionEstablecimiento(tableMeta.rowData);
+                    this.setState({ modalEliminar: true });
+                  }}
+                />
             );
           },
         },
@@ -138,7 +154,7 @@ class Establecimiento extends Component {
             >
               Agregar
             </Button>
-          } 
+          }
           titulo="Establecimientos"
           noRegistro="No hay registro de establecimientos"
           columnas={columns}
@@ -151,7 +167,7 @@ class Establecimiento extends Component {
           formulario={
             <>
               <Form.Group>
-              <Form.Label>Nombre</Form.Label>
+                <Form.Label>Nombre</Form.Label>
                 <Form.Control
                   type="text"
                   id="nombre"
@@ -163,7 +179,7 @@ class Establecimiento extends Component {
                 />
               </Form.Group>
               <Form.Group>
-              <Form.Label>Telefóno</Form.Label>
+                <Form.Label>Telefóno</Form.Label>
                 <Form.Control
                   type="text"
                   id="telefono"
@@ -175,21 +191,61 @@ class Establecimiento extends Component {
                 />
               </Form.Group>
               <Form.Group>
-              <Form.Label>Dirección</Form.Label>
+                <Form.Label>Encargado</Form.Label>
+                <Form.Control
+                  type="text"
+                  id="encargado"
+                  name="encargado"
+                  placeholder="Jesus Rodriguez"
+                  required={true}
+                  value={form ? form.encargado : ""}
+                  onChange={this.handleChange}
+                />
+              </Form.Group>
+              <Form.Group>
+                <Form.Label>Departamento</Form.Label>
                 <Form.Control
                   as="select"
-                  id="direccion"
-                  name="direccion"
+                  id="departamento"
+                  name="departamento"
                   required={true}
-                  value={form ? form.direccion : ""}
+                  value={form ? form.departamento : ""}
                   onChange={this.handleChange}
                 >
                   <option value="" disabled={true}>
                     Seleccione..
                   </option>
-                  <option value="Llantas">Zacatecoluca</option>
-                  <option value="Escapes">San Jacinto</option>
+                  <option value="Llantas">San Salvador</option>
+                  <option value="Escapes">La Paz</option>
                 </Form.Control>
+              </Form.Group>
+              <Form.Group>
+                <Form.Label>Municipio</Form.Label>
+                <Form.Control
+                  as="select"
+                  id="municipio"
+                  name="municipio"
+                  required={true}
+                  value={form ? form.municipio : ""}
+                  onChange={this.handleChange}
+                >
+                  <option value="" disabled={true}>
+                    Seleccione..
+                  </option>
+                  <option value="Llantas">San Salvador</option>
+                  <option value="Escapes">Zacatecoluca</option>
+                </Form.Control>
+              </Form.Group>
+              <Form.Group>
+                <Form.Label>Dirección</Form.Label>
+                <Form.Control
+                  type="text"
+                  id="direccion"
+                  name="direccion"
+                  required={true}
+                  value={form ? form.direccion : ""}
+                  onChange={this.handleChange}
+                ></Form.Control>
               </Form.Group>
             </>
           }
