@@ -1,35 +1,62 @@
-.menu-busqueda{
-    background-color:rgb(50, 102, 141);
-    text-align: center;
-    border-radius: 30px 30px 30px 30px;
-    border: 1px currentColor;
-  }
+.menu-busqueda {
+  background-color: rgb(50, 102, 141);
+  text-align: center;
+  border-radius: 30px 30px 30px 30px;
+  border: 1px solid rgb(118, 179, 151);
+}
 
-  .contenedor-filtros{
-    background-color:rgb(118, 179, 151);
-    border-radius: 30px 30px 30px 30px;
-    border: 1px currentColor;
-    color: rgb(65, 63, 154);
-  }
-  
-  .card-imagen{
-    height: 150px;
-    border-radius: 30px 30px 0px 0px !important;
-    border: 1px currentColor !important;
-  }
-  
-  .tarjeta{
-    width: 260px;
-    border-radius: 30px 30px 15px 15px !important;
-    border: 1px solid !important;
-  }
+.contenedor-filtros {
+  background-color: rgb(118, 179, 151);
+  border-radius: 30px 30px 30px 30px;
+  border: 1px solid rgb(65, 63, 154);
+  color: rgb(65, 63, 154);
+}
 
-  .titulo-repuesto{
-      text-align: center;
-      color: rgb(50, 102, 141);
-  }
+.card-imagen {
+  height: 150px;
+  border-radius: 30px 30px 0px 0px !important;
+  border: 1px currentColor !important;
+}
 
-  .centrar-repuesto{
-    display: flex !important;
-    align-items: center !important;
-  }
+.tarjeta {
+  width: 260px;
+  border-radius: 30px 30px 15px 15px !important;
+  border: 1px solid rgb(118, 179, 151) !important;
+  box-shadow: 1px 1px 1px #919191, 
+  1px 2px 1px #919191, 
+  1px 3px 1px #919191,
+  1px 4px 1px #919191, 
+  1px 5px 1px #919191, 
+  1px 6px 1px #919191, 
+  1px 18px 6px rgba(16, 16, 16, 0.4),
+  1px 22px 10px rgba(16, 16, 16, 0.2), 
+  1px 25px 35px rgba(16, 16, 16, 0.2),
+  1px 30px 60px rgba(16, 16, 16, 0.4);
+}
+
+.tarjeta-mensaje{
+  width: 260px;
+  border-radius: 30px 30px 15px 15px !important;
+}
+
+.tarjeta:hover{
+  transform: scale(1.05);
+}
+
+.contenedor-filtros:hover{
+  transform: scale(1.01);
+}
+
+.menu-busqueda:hover{
+  transform: scale(1.01);
+}
+
+.titulo-repuesto {
+  text-align: center;
+  color: rgb(50, 102, 141);
+}
+
+.centrar-repuesto {
+  display: flex !important;
+  align-items: center !important;
+}

@@ -6,6 +6,8 @@ import BotonesModalEliminar from "../modal/BotonesEliminar";
 import { Button } from "react-bootstrap";
 import ModalCU from "../modal/ModalCU";
 import { Form } from "react-bootstrap";
+import AssignmentIcon from '@mui/icons-material/Assignment';
+import { Tooltip } from "@material-ui/core";
 
 const data = [
   {
@@ -99,16 +101,24 @@ class Inventario extends Component {
         options: {
           customBodyRender: (value, tableMeta, updateValue) => {
             return (
-              <BotonesTable
-                editar={() => {
-                  this.seleccionInventario(tableMeta.rowData);
-                  this.modalInsertar();
-                }}
-                eliminar={() => {
-                  this.seleccionInventario(tableMeta.rowData);
-                  this.setState({ modalEliminar: true });
-                }}
-              />
+              <>
+                <BotonesTable
+                  editar={() => {
+                    this.seleccionInventario(tableMeta.rowData);
+                    this.modalInsertar();
+                  }}
+                  eliminar={() => {
+                    this.seleccionInventario(tableMeta.rowData);
+                    this.setState({ modalEliminar: true });
+                  }}
+                />
+
+                <Tooltip title="Gestionar">
+                  <Button size="sm" variant="outline-secondary">
+                    <AssignmentIcon></AssignmentIcon>
+                  </Button>
+                </Tooltip>
+              </>
             );
           },
         },
@@ -127,7 +137,7 @@ class Inventario extends Component {
             >
               Agregar
             </Button>
-          } 
+          }
           titulo="Inventario de establecimientos"
           noRegistro="No hay registro de inventarios"
           columnas={columns}
@@ -140,7 +150,7 @@ class Inventario extends Component {
           formulario={
             <>
               <Form.Group>
-              <Form.Label>Tipo</Form.Label>
+                <Form.Label>Tipo</Form.Label>
                 <Form.Control
                   type="text"
                   id="tipo"
@@ -152,7 +162,7 @@ class Inventario extends Component {
                 />
               </Form.Group>
               <Form.Group>
-              <Form.Label>Establecimiento</Form.Label>
+                <Form.Label>Establecimiento</Form.Label>
                 <Form.Control
                   as="select"
                   id="establecimiento"

@@ -14,7 +14,10 @@ const data = [
     precio: 160.25,
     cantidad: 4,
     marca: "Toyota",
+    imagen: "../Repuestos/Llantas/Llantas_pesadas.png",
     inventario: "Neumaticos",
+    descuento: 0,
+    empresaProveedora: "Toyota",
   },
   {
     nombre: "Llanta livianas",
@@ -22,7 +25,10 @@ const data = [
     precio: 60,
     cantidad: 4,
     marca: "Toyota",
+    imagen: "../Repuestos/Llantas/Llantas_livianas.png",
     inventario: "Neumaticos",
+    descuento: 30,
+    empresaProveedora: "Toyota",
   },
   {
     nombre: "Llanta para moto",
@@ -30,7 +36,10 @@ const data = [
     precio: 49.25,
     cantidad: 2,
     marca: "Toyota",
+    imagen: "../Repuestos/Llantas/Llantas_moto.png",
     inventario: "Neumaticos",
+    descuento: 10,
+    empresaProveedora: "Toyota",
   },
 ];
 
@@ -47,6 +56,9 @@ class Repuesto extends Component {
         precio: 0.0,
         cantidad: 0,
         marca: "",
+        imagen: "",
+        descuento: 0,
+        empresaProveedora: "",
         inventario: "",
         tipoModal: "",
       },
@@ -93,7 +105,10 @@ class Repuesto extends Component {
         precio: repuesto[2],
         cantidad: repuesto[3],
         marca: repuesto[4],
-        inventario: repuesto[5],
+        imagen: repuesto[5],
+        descuento: repuesto[6],
+        empresaProveedora: repuesto[7],
+        inventario: repuesto[8],
       },
     });
   };
@@ -136,6 +151,26 @@ class Repuesto extends Component {
         label: "Marca",
       },
       {
+        name: "imagen",
+        label: "Imagen",
+        options:{
+          display: false,
+        }
+      },
+      {
+        name: "descuento",
+        label: "Descuento",
+        options: {
+          customBodyRender: (value, tableMeta, updateValue) => {
+            return value + " %";
+          },
+        },
+      },
+      {
+        name: "empresaProveedora",
+        label: "Proveedor",
+      },
+      {
         name: "inventario",
         label: "Inventario",
       },
@@ -157,9 +192,11 @@ class Repuesto extends Component {
               />
             );
           },
+          print: false,
         },
       },
     ];
+
     return (
       <>
         <DataTable
@@ -173,8 +210,8 @@ class Repuesto extends Component {
             >
               Agregar
             </Button>
-          } 
-          titulo="Inventario de repuestos"
+          }
+          titulo="Inventario de llantas"
           noRegistro="No hay registro de repuestos"
           columnas={columns}
           datos={data}
@@ -186,7 +223,7 @@ class Repuesto extends Component {
           formulario={
             <>
               <Form.Group>
-              <Form.Label>Nombre</Form.Label>
+                <Form.Label>Nombre</Form.Label>
                 <Form.Control
                   type="text"
                   id="nombre"
@@ -198,7 +235,7 @@ class Repuesto extends Component {
                 />
               </Form.Group>
               <Form.Group>
-              <Form.Label>Descripción</Form.Label>
+                <Form.Label>Descripción</Form.Label>
                 <Form.Control
                   type="text"
                   id="descripcion"
@@ -210,7 +247,7 @@ class Repuesto extends Component {
                 />
               </Form.Group>
               <Form.Group>
-              <Form.Label>Precio</Form.Label>
+                <Form.Label>Precio</Form.Label>
                 <Form.Control
                   type="text"
                   id="precio"
@@ -222,7 +259,7 @@ class Repuesto extends Component {
                 />
               </Form.Group>
               <Form.Group>
-              <Form.Label>Existencias</Form.Label>
+                <Form.Label>Existencias</Form.Label>
                 <Form.Control
                   type="text"
                   id="cantidad"
@@ -234,7 +271,7 @@ class Repuesto extends Component {
                 />
               </Form.Group>
               <Form.Group>
-              <Form.Label>Marca</Form.Label>
+                <Form.Label>Marca</Form.Label>
                 <Form.Control
                   type="text"
                   id="marca"
@@ -246,7 +283,43 @@ class Repuesto extends Component {
                 />
               </Form.Group>
               <Form.Group>
-              <Form.Label>Inventario</Form.Label>
+                <Form.Label>Dirección imagen</Form.Label>
+                <Form.Control
+                  type="text"
+                  id="imagen"
+                  name="imagen"
+                  placeholder="../Repuestos/..."
+                  required={true}
+                  value={form ? form.imagen : ""}
+                  onChange={this.handleChange}
+                />
+              </Form.Group>
+              <Form.Group>
+                <Form.Label>Descuento</Form.Label>
+                <Form.Control
+                  type="text"
+                  id="descuento"
+                  name="descuento"
+                  placeholder="50"
+                  required={true}
+                  value={form ? form.descuento : ""}
+                  onChange={this.handleChange}
+                />
+              </Form.Group>
+              <Form.Group>
+                <Form.Label>Proveedor</Form.Label>
+                <Form.Control
+                  type="text"
+                  id="empresaProveedora"
+                  name="empresaProveedora"
+                  placeholder="Toyota"
+                  required={true}
+                  value={form ? form.empresaProveedora : ""}
+                  onChange={this.handleChange}
+                />
+              </Form.Group>
+              <Form.Group>
+                <Form.Label>Inventario</Form.Label>
                 <Form.Control
                   as="select"
                   id="inventario"

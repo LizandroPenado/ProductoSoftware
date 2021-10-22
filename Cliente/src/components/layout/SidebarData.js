@@ -47,6 +47,12 @@ export const SidebarData = [
     path: '/rol',
     icon: <LocalGroceryStoreIcon/>,
     cName: 'nav-text'
+  },
+  {
+    title: 'Chat',
+    path: '/chat',
+    icon: <PersonIcon />,
+    cName: 'nav-text'
   },  
 
 ];

@@ -1,6 +1,6 @@
 import React from "react";
 import "./App.css";
-import { BrowserRouter as Router, Switch, Route} from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import Typography from "@material-ui/core/Typography";
 import Navbar from "./components/layout/Navbar";
 import Home from "./components/home/Home";
@@ -10,6 +10,7 @@ import Inventario from "./components/inventario/Inventario";
 import Establecimiento from "./components/establecimiento/Establecimiento";
 import Rol from "./components/rol/Rol";
 import Usuario from "./components/usuario/Usuario";
+import Chat from "./components/chat/Inicio";
 
 function App() {
   return (
@@ -24,13 +25,16 @@ function App() {
           <Route path="/inventario" component={Inventario} />
           <Route path="/establecimiento" component={Establecimiento} />
           <Route path="/usuario" component={Usuario} />
-          <Route path="/rol" component={Rol} />        </Switch>
+          <Route path="/rol" component={Rol} />
+          <Route path="/usuario" component={Repuesto} />
+          <Route path="/chat" component={Chat} />
+        </Switch>
       </Router>
       <footer className="fixed-bottom">
         <Typography variant="body2" color="textSecondary" align="center">
           {"Copyright © "}
           BRV
-          {" "+new Date().getFullYear()}
+          {" " + new Date().getFullYear()}
           {"."}
         </Typography>
       </footer>
