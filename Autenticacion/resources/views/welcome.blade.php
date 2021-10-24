@@ -46,7 +46,7 @@
                 </div>
 
                 <div class="text-gray-600 dark:text-gray-400 text-center">
-                    <h1>Administración General</h1>
+                    <h1>Autenticación</h1>
                 </div>
 
                 <div class="mt-8 bg-white dark:bg-gray-800 overflow-hidden shadow sm:rounded-lg">
