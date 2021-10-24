@@ -18,8 +18,16 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-//Ejemplos para rutas
-/* Route::get('/repuestos', 'App\Http\Controllers\RepuestoController@index');
-Route::post('/repuestos', 'App\Http\Controllers\RepuestoController@store'); 
-Route::put('/repuestos/{id}', 'App\Http\Controllers\RepuestoController@update'); 
-Route::delete('/repuestos/{id}', 'App\Http\Controllers\RepuestoController@destroy');  */
+/* 
+URL para Gestionar Usuarios
+Route::get('/usuarios', 'App\Http\Controllers\UsuarioController@index');
+Route::post('/usuarios', 'App\Http\Controllers\UsuarioController@store'); 
+Route::put('/usuarios/{id}', 'App\Http\Controllers\UsuarioController@update'); 
+Route::delete('/usuarios/{id}', 'App\Http\Controllers\UsuarioController@destroy');  
+
+URL para Gestionar Roles
+Route::get('/roles', 'App\Http\Controllers\RolController@index');
+Route::post('/roles', 'App\Http\Controllers\RolController@store'); 
+Route::put('/roles/{id}', 'App\Http\Controllers\RolController@update'); 
+Route::delete('/roles/{id}', 'App\Http\Controllers\RolController@destroy')
+*/
