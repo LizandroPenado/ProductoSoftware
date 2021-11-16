@@ -8,6 +8,8 @@ import AssignmentIcon from "@mui/icons-material/Assignment";
 import { Tooltip } from "@material-ui/core";
 import axios from "axios";
 import Swal from "sweetalert2";
+import { Link } from "react-router-dom";
+import Repuesto from "../repuesto/Repuesto";
 
 class Inventario extends Component {
   constructor(props) {
@@ -175,6 +177,10 @@ class Inventario extends Component {
       });
   };
 
+  handleSeleccion = () => {
+    <Repuesto />;
+  };
+
   render() {
     const { form } = this.state;
     const columns = [
@@ -224,9 +230,11 @@ class Inventario extends Component {
                 />
 
                 <Tooltip title="Gestionar">
-                  <Button size="sm" variant="outline-secondary">
-                    <AssignmentIcon></AssignmentIcon>
-                  </Button>
+                  <Link to={{pathname: '/repuesto', data: tableMeta.rowData}}>
+                    <Button size="sm" variant="outline-secondary">
+                      <AssignmentIcon></AssignmentIcon>
+                    </Button>
+                  </Link>
                 </Tooltip>
               </>
             );

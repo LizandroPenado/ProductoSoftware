@@ -7,16 +7,18 @@ import { Form } from "react-bootstrap";
 import axios from "axios";
 import Swal from "sweetalert2";
 
-
 class Repuesto extends Component {
   constructor(props) {
     super(props);
     this.state = {
       repuestos: [],
-      inventario_id: "",
-      inventarios: [], 
+      inventarios: [],
       modalInsertar: false,
       modalEliminar: false,
+      inventario: this.props.location.data[0],
+      nombreInventario: this.props.location.data[1],
+      empresa: this.props.location.data[3],
+      empresa_id: this.props.location.data[2],
       form: {
         id: "",
         nombre_repuesto: "",
@@ -32,15 +34,14 @@ class Repuesto extends Component {
     };
   }
 
+  //Metodo para cargar inicial de datos
   componentDidMount() {
     axios
-      .get(
-        "http://127.0.0.1:8004/api/repuestos/" /* , {
-      params: {
-        inventario: 1, debe traer los datos por inventario selecionado
-      },
-    } */
-      )
+      .get("http://127.0.0.1:8004/api/repuestos/inventario/", {
+        params: {
+          inventario: this.state.inventario,
+        },
+      })
       .then((response) => {
         this.setState({ repuestos: response.data });
       })
@@ -48,14 +49,12 @@ class Repuesto extends Component {
         console.log("Sucedio un error");
       });
 
-      axios
-      .get(
-        "http://127.0.0.1:8004/api/inventarios/" /* , {
-      params: {
-        empresa: 1, debe traer los datos por inventario selecionado
-      },
-    } */
-      )
+    axios
+      .get("http://127.0.0.1:8004/api/inventarios/establecimiento/", {
+        params: {
+          establecimiento: this.state.empresa_id,
+        },
+      })
       .then((response) => {
         this.setState({ inventarios: response.data });
       })
@@ -64,6 +63,7 @@ class Repuesto extends Component {
       });
   }
 
+  //Metodo para almacenar cambios hechos por el usuario
   handleChange = async (e) => {
     e.persist();
     await this.setState({
@@ -74,6 +74,7 @@ class Repuesto extends Component {
     });
   };
 
+  //Metodo para seleccionar y mostrar los datos del repuesto
   seleccionRepuesto = (repuesto) => {
     this.setState({
       tipoModal: "actualizar",
@@ -92,11 +93,14 @@ class Repuesto extends Component {
     });
   };
 
+  //Metodo para controlar los modales
   modalInsertar = () => {
     this.setState({ modalInsertar: !this.state.modalInsertar });
   };
 
+  //Metodo para guardar
   peticionPost = async () => {
+    console.log(this.state.form);
     await axios
       .post("http://127.0.0.1:8004/api/repuestos/", this.state.form)
       .then((response) => {
@@ -178,13 +182,14 @@ class Repuesto extends Component {
 
   render() {
     const { form } = this.state;
+    /* Datos de las columnas */
     const columns = [
       {
         name: "id",
         label: "Id",
-        options:{
+        options: {
           display: false,
-        }
+        },
       },
       {
         name: "nombre_repuesto",
@@ -236,16 +241,16 @@ class Repuesto extends Component {
       {
         name: "inventario_id",
         label: "Id inventario",
-        options:{
+        options: {
           display: false,
-        }
+        },
       },
       {
         name: "tipo",
         label: "Inventario",
-        options:{
+        options: {
           display: false,
-        }
+        },
       },
       {
         name: "acciones",
@@ -272,6 +277,7 @@ class Repuesto extends Component {
 
     return (
       <>
+        {/* Tabla */}
         <DataTable
           agregar={
             <Button
@@ -284,11 +290,14 @@ class Repuesto extends Component {
               Agregar
             </Button>
           }
-          titulo="Inventario de llantas"
+          empresa={this.state.empresa}
+          titulo={" Inventario de " + this.state.nombreInventario}
           noRegistro="No hay registro de repuestos"
           columnas={columns}
           datos={this.state.repuestos}
         />
+
+        {/* Modales */}
         <ModalCU
           abrirCrear={this.state.modalInsertar}
           tipoModal={this.state.tipoModal}

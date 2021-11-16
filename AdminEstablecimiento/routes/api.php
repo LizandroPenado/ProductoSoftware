@@ -23,6 +23,7 @@ Route::get('/inventarios', 'App\Http\Controllers\InventarioController@index');
 Route::post('/inventarios', 'App\Http\Controllers\InventarioController@store'); 
 Route::put('/inventarios/{id}', 'App\Http\Controllers\InventarioController@update'); 
 Route::delete('/inventarios/{id}', 'App\Http\Controllers\InventarioController@destroy'); 
+Route::get('/inventarios/establecimiento', 'App\Http\Controllers\InventarioController@inventarioEstablecimiento'); 
 
 //Gestionar Establecimiento
 Route::get('/establecimientos', 'App\Http\Controllers\EstablecimientoController@index'); 
@@ -37,6 +38,7 @@ Route::put('/repuestos/{id}', 'App\Http\Controllers\RepuestoController@update');
 Route::delete('/repuestos/{id}', 'App\Http\Controllers\RepuestoController@destroy');
 Route::get('/repuestos/mostrar', 'App\Http\Controllers\RepuestoController@obtenerRepuesto');
 Route::get('/repuestos/comparar', 'App\Http\Controllers\RepuestoController@compararRepuesto');
+Route::get('/repuestos/inventario', 'App\Http\Controllers\RepuestoController@repuestoInventario');
 
 //Departamentos
 Route::get('/departamentos', 'App\Http\Controllers\DepartamentoController@index'); 
