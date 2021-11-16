@@ -26,7 +26,6 @@ function App() {
           <Route path="/establecimiento" component={Establecimiento} />
           <Route path="/usuario" component={Usuario} />
           <Route path="/rol" component={Rol} />
-          <Route path="/usuario" component={Repuesto} />
           <Route path="/chat" component={Chat} />
         </Switch>
       </Router>

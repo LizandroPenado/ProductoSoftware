@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Inventario;
 use App\Models\Establecimiento;
+use Exception;
+use Illuminate\Support\Facades\DB;
 
 class InventarioController extends Controller
 {
@@ -91,5 +93,21 @@ class InventarioController extends Controller
     {
         $inventario = Inventario::destroy($request->id);
         return $inventario;
+    }
+
+    public function inventarioEstablecimiento(Request $request){
+        /* Variables */
+        $establecimiento = $request->get('establecimiento');
+        /* Validacion de la query */
+        try {
+            $existencia = DB::table('inventarios')
+                ->join('establecimientos', 'establecimientos.id', '=', 'inventarios.establecimiento_id')
+                ->select('inventarios.id', 'inventarios.tipo', 'inventarios.establecimiento_id')
+                ->where('inventarios.establecimiento_id', '=', $establecimiento)
+                ->get();
+            return $existencia;
+        } catch (Exception $e) {
+            return $e;
+        }
     }
 }

@@ -190,4 +190,20 @@ class RepuestoController extends Controller
             return $e;
         }
     }
+
+    public function repuestoInventario(Request $request){
+        /* Variables */
+        $inventario = $request->get('inventario');
+        /* Validacion de la query */
+        try {
+            $existencia = DB::table('repuestos')
+                ->join('inventarios', 'inventarios.id', '=', 'repuestos.inventario_id')
+                ->select('repuestos.id', 'repuestos.nombre_repuesto', 'repuestos.descripcion', 'repuestos.precio', 'repuestos.cantidad', 'repuestos.marca', 'repuestos.imagen', 'repuestos.descuento', 'repuestos.empresa_proveedora', 'repuestos.inventario_id', 'inventarios.tipo')
+                ->where('inventarios.id', '=', $inventario)
+                ->get();
+            return $existencia;
+        } catch (Exception $e) {
+            return $e;
+        }
+    }
 }

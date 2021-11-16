@@ -1,6 +1,7 @@
 import React from "react";
 import MUIDataTable from "mui-datatables";
 import { Container, Row, Col } from "react-bootstrap";
+import "./Tabla.css";
 
 export default function dataTable(props) {
   const options = {
@@ -48,6 +49,11 @@ export default function dataTable(props) {
   };
   return (
     <Container fluid="xxl">
+      <Row>
+        <div className="text-center titulo-empresa">
+          {props.empresa}
+        </div>
+      </Row>
       <Row>
         <Col sm={2} align="right" className="pt-3">
           <div className="pb-4">{props.agregar}</div>

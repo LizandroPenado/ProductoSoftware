@@ -3,7 +3,9 @@ import HomeIcon from '@mui/icons-material/Home';
 import PersonIcon from '@mui/icons-material/Person';
 import CarRepairIcon from '@mui/icons-material/CarRepair';
 import ListIcon from '@mui/icons-material/List';
-import LocalGroceryStoreIcon from '@mui/icons-material/LocalGroceryStore';
+/* import LocalGroceryStoreIcon from '@mui/icons-material/LocalGroceryStore'; */
+import ChatIcon from '@mui/icons-material/Chat';
+import SupervisorAccountIcon from '@mui/icons-material/SupervisorAccount';
 
 export const SidebarData = [
   {
@@ -30,12 +32,12 @@ export const SidebarData = [
     icon: <ListIcon />,
     cName: 'nav-text'
   },
-  {
+  /* {
     title: 'Repuesto',
     path: '/repuesto',
     icon: <LocalGroceryStoreIcon/>,
     cName: 'nav-text'
-  },
+  }, */
   {
     title: 'Usuario',
     path: '/usuario',
@@ -45,13 +47,13 @@ export const SidebarData = [
   {
     title: 'Rol',
     path: '/rol',
-    icon: <LocalGroceryStoreIcon/>,
+    icon: <SupervisorAccountIcon/>,
     cName: 'nav-text'
   },
   {
     title: 'Chat',
     path: '/chat',
-    icon: <PersonIcon />,
+    icon: <ChatIcon />,
     cName: 'nav-text'
   },  
 
