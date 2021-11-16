@@ -135,26 +135,22 @@ class RepuestoController extends Controller
             $sentencia = 'establecimientos.nombre_establecimiento';
             $condicion = 'LIKE';
             $comparacion = '%' . $busqueda . '%';
+        } else if ($filtrado == "nombre_departamento") {
+            $sentencia = 'departamentos.nombre_departamento';
+            $condicion = 'LIKE';
+            $comparacion = '%' . $busqueda . '%';
         } else if ($filtrado == "todo") {
             $sentencia = 'repuestos';
             $condicion = 'LIKE';
             $comparacion = '%' . $busqueda . '%';
-        } else if ($filtrado != "" && $busqueda != "") {
+        } else if ($filtrado == "tipo") {
+            $sentencia = 'inventarios.' . $filtrado;
+            $condicion = 'LIKE';
+            $comparacion = '%' . $busqueda . '%';
+        } else {
             $sentencia = 'repuestos.' . $filtrado;
             $condicion = 'LIKE';
             $comparacion = '%' . $busqueda . '%';
-        }
-
-        if ($filtrado == "nombre_departamento") {
-            $existencia = DB::table('repuestos')
-                ->join('inventarios', 'inventarios.id', '=', 'repuestos.inventario_id')
-                ->join('establecimientos', 'establecimientos.id', '=', 'inventarios.establecimiento_id')
-                ->join('municipios', 'municipios.id', '=', 'establecimientos.municipio_id')
-                ->join('departamentos', 'departamentos.id', '=', 'municipios.departamento_id')
-                ->select('repuestos.nombre_repuesto', 'repuestos.descripcion', 'repuestos.precio', 'repuestos.cantidad', 'repuestos.marca', 'repuestos.imagen', 'establecimientos.nombre_establecimiento')
-                ->where('departamentos.nombre_departamento', 'LIKE', '%' . $busqueda . '%')
-                ->get();
-            return $existencia;
         }
 
         /* Validacion de la query */
@@ -162,12 +158,36 @@ class RepuestoController extends Controller
             $existencia = DB::table('repuestos')
                 ->join('inventarios', 'inventarios.id', '=', 'repuestos.inventario_id')
                 ->join('establecimientos', 'establecimientos.id', '=', 'inventarios.establecimiento_id')
-                ->select('repuestos.nombre_repuesto', 'repuestos.descripcion', 'repuestos.precio', 'repuestos.cantidad', 'repuestos.marca', 'repuestos.imagen', 'establecimientos.nombre_establecimiento')
+                ->join('municipios', 'municipios.id', '=', 'establecimientos.municipio_id')
+                ->join('departamentos', 'departamentos.id', '=', 'municipios.departamento_id')
+                ->select('repuestos.nombre_repuesto', 'repuestos.descripcion', 'repuestos.precio', 'repuestos.cantidad', 'repuestos.marca', 'repuestos.imagen', 'establecimientos.nombre_establecimiento', 'departamentos.nombre_departamento', 'inventarios.tipo')
                 ->where($sentencia, $condicion, $comparacion)
                 ->get();
             return $existencia;
         } catch (Exception $e) {
             return $existencia = [];
+        }
+    }
+
+    public function compararRepuesto(Request $request)
+    {
+        /* Variables */
+        $tipo = $request->get('tipo');
+        $precio = $request->get('precio');
+
+        /* Validacion de la query */
+        try {
+            $existencia = DB::table('repuestos')
+                ->join('inventarios', 'inventarios.id', '=', 'repuestos.inventario_id')
+                ->join('establecimientos', 'establecimientos.id', '=', 'inventarios.establecimiento_id')
+                ->join('municipios', 'municipios.id', '=', 'establecimientos.municipio_id')
+                ->join('departamentos', 'departamentos.id', '=', 'municipios.departamento_id')
+                ->select('repuestos.nombre_repuesto', 'repuestos.descripcion', 'repuestos.precio', 'repuestos.cantidad', 'repuestos.marca', 'repuestos.imagen', 'establecimientos.nombre_establecimiento', 'departamentos.nombre_departamento', 'inventarios.tipo')
+                ->where([['repuestos.precio', '<=', $precio],['inventarios.tipo', '=', $tipo]])
+                ->get();
+            return $existencia;
+        } catch (Exception $e) {
+            return $e;
         }
     }
 }

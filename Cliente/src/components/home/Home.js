@@ -12,35 +12,11 @@ class Home extends Component {
     super(props);
     this.state = {
       repuestos: [],
-      repuestosBuqueda: "",
-      repuestosFiltrado: "",
-      departamentos: [],
-      establecimientos: [],
       form: {
         filtro: "todo",
         busqueda: "",
       },
     };
-  }
-
-  componentDidMount() {
-    axios
-      .get("http://127.0.0.1:8008/api/departamentos/")
-      .then((response) => {
-        this.setState({ departamentos: response.data });
-      })
-      .catch((error) => {
-        console.log("Sucedio un error");
-      });
-
-    /*  axios
-      .get("http://127.0.0.1:8000/api/usuarios/")
-      .then((response) => {
-        this.setState({ establecimientos: response.data });
-      })
-      .catch((error) => {
-        console.log("Sucedio un error");
-      }); */
   }
 
   handleChange = async (e) => {
@@ -54,7 +30,8 @@ class Home extends Component {
   };
 
   handleBusqueda = async () => {
-    /* Esto tiene que ser un bucle con todas las api de los vendedores */
+    /* Esto tiene que ser un bucle con todas las api de los vendedores
+       Para obtener todo los repuestos */
     axios
       .get("http://127.0.0.1:8004/api/repuestos/mostrar/", {
         params: {
@@ -63,7 +40,6 @@ class Home extends Component {
         },
       })
       .then((response) => {
-        console.log(response.data);
         const data_inicial = response.data;
         const repuesto = [];
         for (var i = 0; i < data_inicial.length; i++) {
@@ -73,7 +49,43 @@ class Home extends Component {
             precio: data_inicial[i].precio,
             cantidad: data_inicial[i].cantidad,
             marca: data_inicial[i].marca,
+            tipo: data_inicial[i].tipo,
             establecimiento: data_inicial[i].nombre_establecimiento,
+            departamento: data_inicial[i].nombre_departamento,
+          };
+        }
+        this.setState({ repuestos: repuesto });
+      })
+      .catch((error) => {
+        console.log("Sucedio un error");
+        const repuesto = [];
+        this.setState({ repuestos: repuesto });
+      });
+  };
+
+  handleComparacion = async (inventario, costo) => {
+    /* Esto tiene que ser un bucle con todas las api de los vendedores
+       Para obtener todo los repuestos */
+    axios
+      .get("http://127.0.0.1:8004/api/repuestos/comparar/", {
+        params: {
+          tipo: inventario,
+          precio: costo,
+        },
+      })
+      .then((response) => {
+        const data_inicial = response.data;
+        const repuesto = [];
+        for (var i = 0; i < data_inicial.length; i++) {
+          repuesto[i] = {
+            nombre_repuesto: data_inicial[i].nombre_repuesto,
+            descripcion: data_inicial[i].descripcion,
+            precio: data_inicial[i].precio,
+            cantidad: data_inicial[i].cantidad,
+            marca: data_inicial[i].marca,
+            tipo: data_inicial[i].tipo,
+            establecimiento: data_inicial[i].nombre_establecimiento,
+            departamento: data_inicial[i].nombre_departamento,
           };
         }
         this.setState({ repuestos: repuesto });
@@ -89,6 +101,7 @@ class Home extends Component {
     const { form } = this.state;
     return (
       <>
+        {/* Menu de busqueda */}
         <Container className="menu-busqueda">
           <Row className="pt-4">
             <Col sm={3} className="pb-2">
@@ -128,20 +141,24 @@ class Home extends Component {
           </Row>
           <Row className="pt-2 pb-2"></Row>
         </Container>
+
+        {/* Tarjetas de repuestos */}
         <Container className="pt-4">
           <Row>
             <Col sm={12} className="">
               <Row className="" id="cambiar">
                 {this.state.repuestos.map((elemento) => (
-                  <Col className="pb-3 pt-3 d-flex justify-content-center alig-items-center">
+                  <Col className="pb-4 pt-4 d-flex justify-content-center alig-items-center">
                     <Tarjeta
                       url={Imagen1}
                       repuesto={elemento.nombre_repuesto}
                       descripcion={elemento.descripcion}
                       precio={elemento.precio}
                       cantidad={elemento.cantidad}
+                      tipo={elemento.tipo}
                       marca={elemento.marca}
                       establecimiento={elemento.establecimiento}
+                      departamento={elemento.departamento}
                       botones={
                         <>
                           <Row>
@@ -149,7 +166,17 @@ class Home extends Component {
                               <Button variant="primary">Contactar</Button>
                             </Col>
                             <Col className="pt-2">
-                              <Button variant="secondary">Comparar</Button>
+                              <Button
+                                variant="secondary"
+                                onClick={() =>
+                                  this.handleComparacion(
+                                    elemento.tipo,
+                                    elemento.precio
+                                  )
+                                }
+                              >
+                                Comparar
+                              </Button>
                             </Col>
                           </Row>
                         </>
