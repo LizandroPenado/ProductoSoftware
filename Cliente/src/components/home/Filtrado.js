@@ -10,6 +10,9 @@ export default function filtrado(props) {
       <option value="precio">
         Precio
       </option>
+      <option value="tipo">
+        Tipo
+      </option>
       <option value="marca">
         Marca
       </option>

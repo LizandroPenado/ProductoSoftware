@@ -16,10 +16,15 @@ export default function tarjeta(props) {
           <strong className="font-weight-bold">Existencias:</strong>{" "}
           {props.cantidad} unidades
           <br />
-          <strong className="font-weight-bold"> Marca:</strong> {props.marca}
+          <strong className="font-weight-bold"> Tipo:</strong> {props.tipo}
+          <br />
+          <strong className="font-weight-bold"> Marca:</strong> {props.marca}{" "}
           <br />
           <strong className="font-weight-bold">Establecimiento:</strong>{" "}
           {props.establecimiento}
+          <br />
+          <strong className="font-weight-bold">Departamento:</strong>{" "}
+          {props.departamento}
         </Card.Text>
       </Card.Body>
       <Card.Footer>{props.botones}</Card.Footer>

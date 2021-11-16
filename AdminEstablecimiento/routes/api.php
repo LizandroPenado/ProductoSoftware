@@ -36,6 +36,7 @@ Route::post('/repuestos', 'App\Http\Controllers\RepuestoController@store');
 Route::put('/repuestos/{id}', 'App\Http\Controllers\RepuestoController@update'); 
 Route::delete('/repuestos/{id}', 'App\Http\Controllers\RepuestoController@destroy');
 Route::get('/repuestos/mostrar', 'App\Http\Controllers\RepuestoController@obtenerRepuesto');
+Route::get('/repuestos/comparar', 'App\Http\Controllers\RepuestoController@compararRepuesto');
 
 //Departamentos
 Route::get('/departamentos', 'App\Http\Controllers\DepartamentoController@index'); 
