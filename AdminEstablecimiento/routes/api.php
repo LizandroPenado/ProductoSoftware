@@ -18,22 +18,28 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-/* 
-URL para Gestionar inventario
+//Gestionar inventario
 Route::get('/inventarios', 'App\Http\Controllers\InventarioController@index'); 
 Route::post('/inventarios', 'App\Http\Controllers\InventarioController@store'); 
 Route::put('/inventarios/{id}', 'App\Http\Controllers\InventarioController@update'); 
 Route::delete('/inventarios/{id}', 'App\Http\Controllers\InventarioController@destroy'); 
 
-URL para Gestionar Establecimiento
+//Gestionar Establecimiento
 Route::get('/establecimientos', 'App\Http\Controllers\EstablecimientoController@index'); 
 Route::post('/establecimientos', 'App\Http\Controllers\EstablecimientoController@store'); 
 Route::put('/establecimientos/{id}', 'App\Http\Controllers\EstablecimientoController@update'); 
 Route::delete('/establecimientos/{id}', 'App\Http\Controllers\EstablecimientoController@destroy');
 
-URL para Gestionar Repuestos
+//Gestionar Repuestos
 Route::get('/repuestos', 'App\Http\Controllers\RepuestoController@index'); 
 Route::post('/repuestos', 'App\Http\Controllers\RepuestoController@store'); 
 Route::put('/repuestos/{id}', 'App\Http\Controllers\RepuestoController@update'); 
 Route::delete('/repuestos/{id}', 'App\Http\Controllers\RepuestoController@destroy');
-*/
+Route::get('/repuestos/mostrar', 'App\Http\Controllers\RepuestoController@obtenerRepuesto');
+
+//Departamentos
+Route::get('/departamentos', 'App\Http\Controllers\DepartamentoController@index'); 
+
+//Municipios
+Route::get('/municipios', 'App\Http\Controllers\MunicipioController@index'); 
+Route::get('/municipios/departamentos', 'App\Http\Controllers\MunicipioController@filtroDepartamento'); 

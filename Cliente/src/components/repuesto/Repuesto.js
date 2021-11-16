@@ -1,90 +1,68 @@
 import React, { Component } from "react";
 import DataTable from "../datatable/DataTable";
 import BotonesTable from "../datatable/BotonesTable";
-import BotonesModalRegistrar from "../modal/BotonesRegistrar";
-import BotonesModalEliminar from "../modal/BotonesEliminar";
 import { Button } from "react-bootstrap";
 import ModalCU from "../modal/ModalCU";
 import { Form } from "react-bootstrap";
+import axios from "axios";
+import Swal from "sweetalert2";
 
-const data = [
-  {
-    nombre: "Llantas pesadas",
-    descripcion: "Llantas 500x200",
-    precio: 160.25,
-    cantidad: 4,
-    marca: "Toyota",
-    imagen: "../Repuestos/Llantas/Llantas_pesadas.png",
-    inventario: "Neumaticos",
-    descuento: 0,
-    empresaProveedora: "Toyota",
-  },
-  {
-    nombre: "Llanta livianas",
-    descripcion: "Llantas 200x200",
-    precio: 60,
-    cantidad: 4,
-    marca: "Toyota",
-    imagen: "../Repuestos/Llantas/Llantas_livianas.png",
-    inventario: "Neumaticos",
-    descuento: 30,
-    empresaProveedora: "Toyota",
-  },
-  {
-    nombre: "Llanta para moto",
-    descripcion: "Llantas dobles",
-    precio: 49.25,
-    cantidad: 2,
-    marca: "Toyota",
-    imagen: "../Repuestos/Llantas/Llantas_moto.png",
-    inventario: "Neumaticos",
-    descuento: 10,
-    empresaProveedora: "Toyota",
-  },
-];
 
 class Repuesto extends Component {
   constructor(props) {
     super(props);
     this.state = {
       repuestos: [],
+      inventario_id: "",
+      inventarios: [], 
       modalInsertar: false,
       modalEliminar: false,
       form: {
-        nombre: "",
+        id: "",
+        nombre_repuesto: "",
         descripcion: "",
         precio: 0.0,
         cantidad: 0,
         marca: "",
         imagen: "",
         descuento: 0,
-        empresaProveedora: "",
-        inventario: "",
-        tipoModal: "",
+        empresa_proveedora: "",
+        inventario_id: "",
       },
     };
   }
 
-  /* componentDidMount() {
+  componentDidMount() {
     axios
-      .get("http://127.0.0.1:8001/api/cuentas/")
+      .get(
+        "http://127.0.0.1:8004/api/repuestos/" /* , {
+      params: {
+        inventario: 1, debe traer los datos por inventario selecionado
+      },
+    } */
+      )
       .then((response) => {
-        this.setState({ cuentas: response.data });
-        axios
-          .get("http://127.0.0.1:8000/api/repuestos/")
-          .then((response) => {
-            this.setState({ repuestos: response.data });
-          })
-          .catch((error) => {});
+        this.setState({ repuestos: response.data });
       })
       .catch((error) => {
-        Swal.fire({
-          position: "center",
-          icon: "error",
-          title: "Por el momento no hay conexión con la base de datos",
-        });
+        console.log("Sucedio un error");
       });
-  } */
+
+      axios
+      .get(
+        "http://127.0.0.1:8004/api/inventarios/" /* , {
+      params: {
+        empresa: 1, debe traer los datos por inventario selecionado
+      },
+    } */
+      )
+      .then((response) => {
+        this.setState({ inventarios: response.data });
+      })
+      .catch((error) => {
+        console.log("Sucedio un error");
+      });
+  }
 
   handleChange = async (e) => {
     e.persist();
@@ -100,15 +78,16 @@ class Repuesto extends Component {
     this.setState({
       tipoModal: "actualizar",
       form: {
-        nombre: repuesto[0],
-        descripcion: repuesto[1],
-        precio: repuesto[2],
-        cantidad: repuesto[3],
-        marca: repuesto[4],
-        imagen: repuesto[5],
-        descuento: repuesto[6],
-        empresaProveedora: repuesto[7],
-        inventario: repuesto[8],
+        id: repuesto[0],
+        nombre_repuesto: repuesto[1],
+        descripcion: repuesto[2],
+        precio: repuesto[3],
+        cantidad: repuesto[4],
+        marca: repuesto[5],
+        imagen: repuesto[6],
+        descuento: repuesto[7],
+        empresa_proveedora: repuesto[8],
+        inventario_id: repuesto[9],
       },
     });
   };
@@ -117,11 +96,98 @@ class Repuesto extends Component {
     this.setState({ modalInsertar: !this.state.modalInsertar });
   };
 
+  peticionPost = async () => {
+    await axios
+      .post("http://127.0.0.1:8004/api/repuestos/", this.state.form)
+      .then((response) => {
+        this.modalInsertar();
+        Swal.fire({
+          position: "center",
+          icon: "success",
+          title: "Se a guardado con exito",
+          showConfirmButton: false,
+          timer: 2500,
+        });
+        this.componentDidMount();
+      })
+      .catch((error) => {
+        Swal.fire({
+          position: "center",
+          icon: "error",
+          title: "Ocurrio un error en el registro del sector",
+          showConfirmButton: false,
+          timer: 2500,
+        });
+      });
+  };
+
+  //Metodo para actualizar
+  peticionPut = () => {
+    axios
+      .put(
+        "http://127.0.0.1:8004/api/repuestos/" + this.state.form.id + "/",
+        this.state.form
+      )
+      .then((response) => {
+        this.modalInsertar();
+        Swal.fire({
+          position: "center",
+          icon: "success",
+          title: "Se a guardado con exito",
+          showConfirmButton: false,
+          timer: 2500,
+        });
+        this.componentDidMount();
+      })
+      .catch((error) => {
+        Swal.fire({
+          position: "center",
+          icon: "error",
+          title: "Ocurrio un error en actualizar el sector",
+          showConfirmButton: false,
+          timer: 2500,
+        });
+      });
+  };
+
+  //Metodo para eliminar
+  peticionDelete = () => {
+    axios
+      .delete("http://127.0.0.1:8004/api/repuestos/" + this.state.form.id)
+      .then((response) => {
+        this.setState({ modalEliminar: false });
+        Swal.fire({
+          position: "center",
+          icon: "success",
+          title: "Se a eliminado con exito",
+          showConfirmButton: false,
+          timer: 2500,
+        });
+        this.componentDidMount();
+      })
+      .catch((error) => {
+        Swal.fire({
+          position: "center",
+          icon: "error",
+          title: "Ocurrio un error en el eliminar el sector",
+          showConfirmButton: false,
+          timer: 2500,
+        });
+      });
+  };
+
   render() {
     const { form } = this.state;
     const columns = [
       {
-        name: "nombre",
+        name: "id",
+        label: "Id",
+        options:{
+          display: false,
+        }
+      },
+      {
+        name: "nombre_repuesto",
         label: "Nombre",
       },
       {
@@ -153,9 +219,6 @@ class Repuesto extends Component {
       {
         name: "imagen",
         label: "Imagen",
-        options:{
-          display: false,
-        }
       },
       {
         name: "descuento",
@@ -167,12 +230,22 @@ class Repuesto extends Component {
         },
       },
       {
-        name: "empresaProveedora",
+        name: "empresa_proveedora",
         label: "Proveedor",
       },
       {
-        name: "inventario",
+        name: "inventario_id",
+        label: "Id inventario",
+        options:{
+          display: false,
+        }
+      },
+      {
+        name: "tipo",
         label: "Inventario",
+        options:{
+          display: false,
+        }
       },
       {
         name: "acciones",
@@ -214,7 +287,7 @@ class Repuesto extends Component {
           titulo="Inventario de llantas"
           noRegistro="No hay registro de repuestos"
           columnas={columns}
-          datos={data}
+          datos={this.state.repuestos}
         />
         <ModalCU
           abrirCrear={this.state.modalInsertar}
@@ -226,11 +299,11 @@ class Repuesto extends Component {
                 <Form.Label>Nombre</Form.Label>
                 <Form.Control
                   type="text"
-                  id="nombre"
-                  name="nombre"
+                  id="nombre_repuesto"
+                  name="nombre_repuesto"
                   placeholder="Radiador"
                   required={true}
-                  value={form ? form.nombre : ""}
+                  value={form ? form.nombre_repuesto : ""}
                   onChange={this.handleChange}
                 />
               </Form.Group>
@@ -310,44 +383,64 @@ class Repuesto extends Component {
                 <Form.Label>Proveedor</Form.Label>
                 <Form.Control
                   type="text"
-                  id="empresaProveedora"
-                  name="empresaProveedora"
+                  id="empresa_proveedora"
+                  name="empresa_proveedora"
                   placeholder="Toyota"
                   required={true}
-                  value={form ? form.empresaProveedora : ""}
+                  value={form ? form.empresa_proveedora : ""}
                   onChange={this.handleChange}
                 />
               </Form.Group>
               <Form.Group>
                 <Form.Label>Inventario</Form.Label>
-                <Form.Control
-                  as="select"
-                  id="inventario"
-                  name="inventario"
+                <Form.Select
+                  id="inventario_id"
+                  name="inventario_id"
                   required={true}
-                  value={form ? form.inventario : ""}
+                  value={form ? form.inventario_id : ""}
                   onChange={this.handleChange}
                 >
                   <option value="" disabled={true}>
                     Seleccione..
                   </option>
-                  <option value="Llantas">Llantas</option>
-                  <option value="Escapes">Escapes</option>
-                </Form.Control>
+                  {this.state.inventarios.map((elemento) => (
+                    <option key={elemento.id} value={elemento.id}>
+                      {elemento.tipo}
+                    </option>
+                  ))}
+                </Form.Select>
               </Form.Group>
             </>
           }
           pieModalCrear={
-            <BotonesModalRegistrar
-              tipoModal={this.state.tipoModal}
-              cancelar={() => this.modalInsertar()}
-            />
+            <>
+              {this.state.tipoModal === "insertar" ? (
+                <Button variant="primary" onClick={() => this.peticionPost()}>
+                  Guardar
+                </Button>
+              ) : (
+                <Button variant="primary" onClick={() => this.peticionPut()}>
+                  Actualizar
+                </Button>
+              )}
+              <Button variant="secondary" onClick={() => this.modalInsertar()}>
+                Cancelar
+              </Button>
+            </>
           }
           abrirEliminar={this.state.modalEliminar}
           pieModalEliminar={
-            <BotonesModalEliminar
-              cancelar={() => this.setState({ modalEliminar: false })}
-            />
+            <>
+              <Button variant="danger" onClick={() => this.peticionDelete()}>
+                Aceptar
+              </Button>
+              <Button
+                variant="secondary"
+                onClick={() => this.setState({ modalEliminar: false })}
+              >
+                Cancelar
+              </Button>
+            </>
           }
         />
       </>

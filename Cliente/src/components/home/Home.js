@@ -1,146 +1,162 @@
 import React, { Component } from "react";
-import { Container, Row, Col, Form, Button } from "react-bootstrap";
+import { Container, Row, Col, Form, Button, FormLabel } from "react-bootstrap";
 import SearchIcon from "@mui/icons-material/Search";
-import FilterListIcon from '@mui/icons-material/FilterList';
 import Tarjeta from "./Tarjeta";
 import "./Home.css";
+import axios from "axios";
 import Imagen1 from "./img/llantas_pesadas.jpg";
-import Imagen2 from "./img/llantas_livianas.jpg";
-import Imagen3 from "./img/llantas_moto.jpg";
+import Filtrado from "./Filtrado";
 
 class Home extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      repuestos: [],
+      repuestosBuqueda: "",
+      repuestosFiltrado: "",
+      departamentos: [],
+      establecimientos: [],
+      form: {
+        filtro: "todo",
+        busqueda: "",
+      },
+    };
+  }
+
+  componentDidMount() {
+    axios
+      .get("http://127.0.0.1:8008/api/departamentos/")
+      .then((response) => {
+        this.setState({ departamentos: response.data });
+      })
+      .catch((error) => {
+        console.log("Sucedio un error");
+      });
+
+    /*  axios
+      .get("http://127.0.0.1:8000/api/usuarios/")
+      .then((response) => {
+        this.setState({ establecimientos: response.data });
+      })
+      .catch((error) => {
+        console.log("Sucedio un error");
+      }); */
+  }
+
+  handleChange = async (e) => {
+    e.persist();
+    await this.setState({
+      form: {
+        ...this.state.form,
+        [e.target.name]: e.target.value,
+      },
+    });
+  };
+
+  handleBusqueda = async () => {
+    /* Esto tiene que ser un bucle con todas las api de los vendedores */
+    axios
+      .get("http://127.0.0.1:8004/api/repuestos/mostrar/", {
+        params: {
+          busqueda: this.state.form.busqueda,
+          filtrado: this.state.form.filtro,
+        },
+      })
+      .then((response) => {
+        console.log(response.data);
+        const data_inicial = response.data;
+        const repuesto = [];
+        for (var i = 0; i < data_inicial.length; i++) {
+          repuesto[i] = {
+            nombre_repuesto: data_inicial[i].nombre_repuesto,
+            descripcion: data_inicial[i].descripcion,
+            precio: data_inicial[i].precio,
+            cantidad: data_inicial[i].cantidad,
+            marca: data_inicial[i].marca,
+            establecimiento: data_inicial[i].nombre_establecimiento,
+          };
+        }
+        this.setState({ repuestos: repuesto });
+      })
+      .catch((error) => {
+        console.log("Sucedio un error");
+        const repuesto = [];
+        this.setState({ repuestos: repuesto });
+      });
+  };
+
   render() {
+    const { form } = this.state;
     return (
       <>
         <Container className="menu-busqueda">
           <Row className="pt-4">
-            <Col sm={2} className="pb-2">
-              <Button variant="success">
-                <SearchIcon />
-                Buscar
-              </Button>
-            </Col>
-            <Col sm={10}>
+            <Col sm={3} className="pb-2">
               <Form.Group>
-                <Form.Control type="text" id="buscador" name="buscador" />
+                <FormLabel>Filtros</FormLabel>
+                <Form.Select
+                  id="filtro"
+                  name="filtro"
+                  value={form.filtro}
+                  onChange={this.handleChange}
+                >
+                  <Filtrado />
+                </Form.Select>
               </Form.Group>
+            </Col>
+            <Col sm={7}>
+              <Form.Group>
+                <FormLabel>Busqueda</FormLabel>
+                <Form.Control
+                  type="text"
+                  id="busqueda"
+                  name="busqueda"
+                  value={form.busqueda}
+                  onChange={this.handleChange}
+                />
+              </Form.Group>
+            </Col>
+            <Col sm={2}>
+              <Form.Label>Acción</Form.Label>
+              <div>
+                <Button variant="success" onClick={() => this.handleBusqueda()}>
+                  <SearchIcon />
+                  Buscar
+                </Button>
+              </div>
             </Col>
           </Row>
           <Row className="pt-2 pb-2"></Row>
         </Container>
         <Container className="pt-4">
           <Row>
-            <Col sm={3} className="pt-3 pb-3 contenedor-filtros ">
-              <div className="text-center">
-                <h4>Filtros</h4>
-              </div>
-              <Form.Group className="pb-2">
-                <Form.Label>Departamento</Form.Label>
-                <Form.Control as="select" id="departamento" name="departamento">
-                  <option value="" disabled={true} selected>
-                    Seleccione..
-                  </option>
-                  <option value="San Salvador">San Salvador</option>
-                  <option value="San Miguel">San Miguel</option>
-                </Form.Control>
-              </Form.Group>
-              <Form.Group className="pb-2">
-                <Form.Label>Tipo</Form.Label>
-                <Form.Control as="select" id="tipo" name="tipo">
-                  <option value="" disabled={true} selected>
-                    Seleccione..
-                  </option>
-                  <option value="Motor">Motor</option>
-                  <option value="Filtros">Filtros</option>
-                  <option value="Llantas">Llantas</option>
-                </Form.Control>
-              </Form.Group>
-              <Form.Group className="pb-4">
-                <Form.Label>Precio</Form.Label>
-                <Form.Control
-                  type="text"
-                  id="precio"
-                  name="precio"
-                ></Form.Control>
-              </Form.Group>
-              <div className="text-center">
-                <Button variant="light">
-                  <FilterListIcon/>
-                  Filtrar
-                </Button>
-              </div>
-            </Col>
-            <Col sm={9} className="">
-              <Row className="">
-                <Col className="pb-3 pt-3 d-flex justify-content-center alig-items-center">
-                  <Tarjeta
-                    url={Imagen1}
-                    repuesto="Llantas pesadas"
-                    descripcion="Llantas 500x200"
-                    precio="160.25"
-                    cantidad="4"
-                    marca="Toyota"
-                    establecimiento="Super repuestos"
-                    botones={
-                      <>
-                        <Row>
-                          <Col className="pt-2">
-                            <Button variant="primary">Contactar</Button>
-                          </Col>
-                          <Col className="pt-2">
-                            <Button variant="secondary">Comparar</Button>
-                          </Col>
-                        </Row>
-                      </>
-                    }
-                  />
-                </Col>
-                <Col className="pb-3 pt-3 d-flex justify-content-center alig-items-center">
-                  <Tarjeta
-                    url={Imagen2}
-                    repuesto="Llanta livianas"
-                    descripcion="Llantas 200x200"
-                    precio="60"
-                    cantidad="4"
-                    marca="Toyota"
-                    establecimiento="Mega repuestos"
-                    botones={
-                      <>
-                        <Row>
-                          <Col className="pt-2">
-                            <Button variant="primary">Contactar</Button>
-                          </Col>
-                          <Col className="pt-2">
-                            <Button variant="secondary">Comparar</Button>
-                          </Col>
-                        </Row>
-                      </>
-                    }
-                  />
-                </Col>
-                <Col className="pb-3 pt-3 d-flex justify-content-center alig-items-center">
-                  <Tarjeta
-                    url={Imagen3}
-                    repuesto="Llanta para moto"
-                    descripcion="Llantas dobles"
-                    precio="49.25"
-                    cantidad="2"
-                    marca="Toyota"
-                    establecimiento="Hiper repuestos"
-                    botones={
-                      <>
-                        <Row>
-                          <Col className="pt-2">
-                            <Button variant="primary">Contactar</Button>
-                          </Col>
-                          <Col className="pt-2">
-                            <Button variant="secondary">Comparar</Button>
-                          </Col>
-                        </Row>
-                      </>
-                    }
-                  />
-                </Col>
+            <Col sm={12} className="">
+              <Row className="" id="cambiar">
+                {this.state.repuestos.map((elemento) => (
+                  <Col className="pb-3 pt-3 d-flex justify-content-center alig-items-center">
+                    <Tarjeta
+                      url={Imagen1}
+                      repuesto={elemento.nombre_repuesto}
+                      descripcion={elemento.descripcion}
+                      precio={elemento.precio}
+                      cantidad={elemento.cantidad}
+                      marca={elemento.marca}
+                      establecimiento={elemento.establecimiento}
+                      botones={
+                        <>
+                          <Row>
+                            <Col className="pt-2">
+                              <Button variant="primary">Contactar</Button>
+                            </Col>
+                            <Col className="pt-2">
+                              <Button variant="secondary">Comparar</Button>
+                            </Col>
+                          </Row>
+                        </>
+                      }
+                    />
+                  </Col>
+                ))}
               </Row>
             </Col>
           </Row>
