@@ -31,3 +31,10 @@ URL Comparar Precio
 URL Contactar Establecimiento
 
 */
+
+//Departamentos
+Route::get('/departamentos', 'App\Http\Controllers\DepartamentoController@index'); 
+
+//Municipios
+Route::get('/municipios', 'App\Http\Controllers\MunicipioController@index'); 
+Route::get('/municipios/departamentos', 'App\Http\Controllers\MunicipioController@filtroDepartamento'); 

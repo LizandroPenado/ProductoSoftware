@@ -1,8 +1,9 @@
 .menu-busqueda {
-  background-color: rgb(50, 102, 141);
+  background-color: #206d95;
   text-align: center;
   border-radius: 30px 30px 30px 30px;
-  border: 1px solid rgb(118, 179, 151);
+  border: 1px solid #0D4E80;
+  color: white;
 }
 
 .contenedor-filtros {
@@ -41,14 +42,6 @@
 
 .tarjeta:hover{
   transform: scale(1.05);
-}
-
-.contenedor-filtros:hover{
-  transform: scale(1.01);
-}
-
-.menu-busqueda:hover{
-  transform: scale(1.01);
 }
 
 .titulo-repuesto {

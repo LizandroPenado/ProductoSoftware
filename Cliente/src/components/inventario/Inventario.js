@@ -1,64 +1,73 @@
 import React, { Component } from "react";
 import DataTable from "../datatable/DataTable";
 import BotonesTable from "../datatable/BotonesTable";
-import BotonesModalRegistrar from "../modal/BotonesRegistrar";
-import BotonesModalEliminar from "../modal/BotonesEliminar";
 import { Button } from "react-bootstrap";
 import ModalCU from "../modal/ModalCU";
 import { Form } from "react-bootstrap";
-import AssignmentIcon from '@mui/icons-material/Assignment';
+import AssignmentIcon from "@mui/icons-material/Assignment";
 import { Tooltip } from "@material-ui/core";
-
-const data = [
-  {
-    establecimiento: "Impresa Repuestos",
-    tipo: "Neumaticos",
-  },
-  {
-    establecimiento: "Impresa Repuestos",
-    tipo: "Piezas",
-  },
-  {
-    establecimiento: "Didea Repuestos",
-    tipo: "Neumaticos",
-  },
-];
+import axios from "axios";
+import Swal from "sweetalert2";
 
 class Inventario extends Component {
   constructor(props) {
     super(props);
     this.state = {
       inventarios: [],
+      establecimientos: [],
       modalInsertar: false,
       modalEliminar: false,
       form: {
-        establecimiento: "",
         tipo: "",
-        tipoModal: "",
+        establecimiento_id: "",
+        establecimiento: "",
       },
     };
   }
 
-  /* componentDidMount() {
+  componentDidMount() {
     axios
-      .get("http://127.0.0.1:8001/api/cuentas/")
+      .get(
+        "http://127.0.0.1:8004/api/inventarios/" /* , {
+      params: {
+        usuario: 1, debe traer los datos por usuario
+      },
+    } */
+      )
       .then((response) => {
-        this.setState({ cuentas: response.data });
-        axios
-          .get("http://127.0.0.1:8000/api/repuestos/")
-          .then((response) => {
-            this.setState({ repuestos: response.data });
-          })
-          .catch((error) => {});
+        const inicial_data = response.data;
+        const inventario = [];
+        for (var i = 0; i < inicial_data.length; i++) {
+          inventario[i] = {
+            id: inicial_data[i].id,
+            tipo: inicial_data[i].tipo,
+            establecimiento:
+              inicial_data[i].establecimiento.nombre_establecimiento,
+            establecimiento_id: inicial_data[i].establecimiento_id,
+            encargado: inicial_data[i].establecimiento.encargado,
+          };
+        }
+        this.setState({ inventarios: inventario });
       })
       .catch((error) => {
-        Swal.fire({
-          position: "center",
-          icon: "error",
-          title: "Por el momento no hay conexión con la base de datos",
-        });
+        console.log("Sucedio un error");
       });
-  } */
+
+    axios
+      .get(
+        "http://127.0.0.1:8004/api/establecimientos/" /* , {
+      params: {
+        usuario: 1, debe traer los datos por usuario
+      },
+    } */
+      )
+      .then((response) => {
+        this.setState({ establecimientos: response.data });
+      })
+      .catch((error) => {
+        console.log("Sucedio un error");
+      });
+  }
 
   handleChange = async (e) => {
     e.persist();
@@ -74,8 +83,10 @@ class Inventario extends Component {
     this.setState({
       tipoModal: "actualizar",
       form: {
-        establecimiento: inventario[0],
+        id: inventario[0],
         tipo: inventario[1],
+        establecimiento_id: inventario[2],
+        establecimiento: inventario[3],
       },
     });
   };
@@ -84,21 +95,120 @@ class Inventario extends Component {
     this.setState({ modalInsertar: !this.state.modalInsertar });
   };
 
+  peticionPost = async () => {
+    await axios
+      .post("http://127.0.0.1:8004/api/inventarios/", this.state.form)
+      .then((response) => {
+        this.modalInsertar();
+        Swal.fire({
+          position: "center",
+          icon: "success",
+          title: "Se a guardado con exito",
+          showConfirmButton: false,
+          timer: 2500,
+        });
+        this.componentDidMount();
+      })
+      .catch((error) => {
+        Swal.fire({
+          position: "center",
+          icon: "error",
+          title: "Ocurrio un error en el registro del sector",
+          showConfirmButton: false,
+          timer: 2500,
+        });
+      });
+  };
+
+  //Metodo para actualizar
+  peticionPut = () => {
+    axios
+      .put(
+        "http://127.0.0.1:8004/api/inventarios/" + this.state.form.id + "/",
+        this.state.form
+      )
+      .then((response) => {
+        this.modalInsertar();
+        Swal.fire({
+          position: "center",
+          icon: "success",
+          title: "Se a guardado con exito",
+          showConfirmButton: false,
+          timer: 2500,
+        });
+        this.componentDidMount();
+      })
+      .catch((error) => {
+        Swal.fire({
+          position: "center",
+          icon: "error",
+          title: "Ocurrio un error en actualizar el sector",
+          showConfirmButton: false,
+          timer: 2500,
+        });
+      });
+  };
+
+  //Metodo para eliminar
+  peticionDelete = () => {
+    axios
+      .delete("http://127.0.0.1:8004/api/inventarios/" + this.state.form.id)
+      .then((response) => {
+        this.setState({ modalEliminar: false });
+        Swal.fire({
+          position: "center",
+          icon: "success",
+          title: "Se a eliminado con exito",
+          showConfirmButton: false,
+          timer: 2500,
+        });
+        this.componentDidMount();
+      })
+      .catch((error) => {
+        Swal.fire({
+          position: "center",
+          icon: "error",
+          title: "Ocurrio un error en el eliminar el sector",
+          showConfirmButton: false,
+          timer: 2500,
+        });
+      });
+  };
+
   render() {
     const { form } = this.state;
     const columns = [
       {
-        name: "establecimiento",
-        label: "Establecimiento",
+        name: "id",
+        label: "Id",
+        options: {
+          display: false,
+        },
       },
       {
         name: "tipo",
         label: "Tipo",
       },
       {
+        name: "establecimiento_id",
+        label: "Id establecimiento",
+        options: {
+          display: false,
+        },
+      },
+      {
+        name: "establecimiento",
+        label: "Establecimiento",
+      },
+      {
+        name: "encargado",
+        label: "Encargado",
+      },
+      {
         name: "acciones",
         label: "Acciónes",
         options: {
+          print: false,
           customBodyRender: (value, tableMeta, updateValue) => {
             return (
               <>
@@ -141,7 +251,7 @@ class Inventario extends Component {
           titulo="Inventario de establecimientos"
           noRegistro="No hay registro de inventarios"
           columnas={columns}
-          datos={data}
+          datos={this.state.inventarios}
         />
         <ModalCU
           abrirCrear={this.state.modalInsertar}
@@ -163,34 +273,54 @@ class Inventario extends Component {
               </Form.Group>
               <Form.Group>
                 <Form.Label>Establecimiento</Form.Label>
-                <Form.Control
-                  as="select"
-                  id="establecimiento"
-                  name="establecimiento"
+                <Form.Select
+                  id="establecimiento_id"
+                  name="establecimiento_id"
                   required={true}
-                  value={form ? form.establecimiento : ""}
+                  value={form ? form.establecimiento_id : ""}
                   onChange={this.handleChange}
                 >
                   <option value="" disabled={true}>
                     Seleccione..
                   </option>
-                  <option value="Llantas">Impresa Repuestos</option>
-                  <option value="Escapes">Didea Repuestos</option>
-                </Form.Control>
+                  {this.state.establecimientos.map((elemento) => (
+                    <option key={elemento.id} value={elemento.id}>
+                      {elemento.nombre_establecimiento}
+                    </option>
+                  ))}
+                </Form.Select>
               </Form.Group>
             </>
           }
           pieModalCrear={
-            <BotonesModalRegistrar
-              tipoModal={this.state.tipoModal}
-              cancelar={() => this.modalInsertar()}
-            />
+            <>
+              {this.state.tipoModal === "insertar" ? (
+                <Button variant="primary" onClick={() => this.peticionPost()}>
+                  Guardar
+                </Button>
+              ) : (
+                <Button variant="primary" onClick={() => this.peticionPut()}>
+                  Actualizar
+                </Button>
+              )}
+              <Button variant="secondary" onClick={() => this.modalInsertar()}>
+                Cancelar
+              </Button>
+            </>
           }
           abrirEliminar={this.state.modalEliminar}
           pieModalEliminar={
-            <BotonesModalEliminar
-              cancelar={() => this.setState({ modalEliminar: false })}
-            />
+            <>
+              <Button variant="danger" onClick={() => this.peticionDelete()}>
+                Aceptar
+              </Button>
+              <Button
+                variant="secondary"
+                onClick={() => this.setState({ modalEliminar: false })}
+              >
+                Cancelar
+              </Button>
+            </>
           }
         />
       </>
