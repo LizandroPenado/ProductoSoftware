@@ -37,6 +37,15 @@ class EstablecimientoController extends Controller
      */
     public function store(Request $request)
     {
+        $request->validate([
+            'nombre_establecimiento' => 'required|max:100',
+            'telefono' => 'required|min:8|max:15',
+            'encargado' => 'required|max:50',
+            'direccion' => 'required|max:200',
+            'municipio_id' => 'required',
+        ]);
+
+
         $establecimientos = new Establecimiento();
         $establecimientos->nombre_establecimiento = $request->get('nombre_establecimiento');
         $establecimientos->telefono = $request->get('telefono');
@@ -77,6 +86,15 @@ class EstablecimientoController extends Controller
      */
     public function update(Request $request)
     {
+
+        $request->validate([
+            'nombre_establecimiento' => 'required|max:100',
+            'telefono' => 'required|min:8|max:15',
+            'encargado' => 'required|max:50',
+            'direccion' => 'required|max:200',
+            'municipio_id' => 'required',
+        ]);
+        
         $establecimiento = Establecimiento::findOrFail($request->id);
         $establecimiento->nombre_establecimiento = $request->get('nombre_establecimiento');
         $establecimiento->telefono = $request->get('telefono');

@@ -39,6 +39,12 @@ class InventarioController extends Controller
      */
     public function store(Request $request)
     {
+
+        $request->validate([
+            'tipo' => 'required|max:50',
+            'establecimiento_id' => 'required',
+        ]);
+
         $inventario = new Inventario();
         $inventario->tipo = $request->get('tipo');
         $inventario->establecimiento_id = $request->get('establecimiento_id');
@@ -76,6 +82,12 @@ class InventarioController extends Controller
      */
     public function update(Request $request)
     {
+
+        $request->validate([
+            'tipo' => 'required|max:50',
+            'establecimiento_id' => 'required',
+        ]);
+        
         $inventario = Inventario::findOrFail($request->id);
         $inventario->tipo = $request->get('tipo');
         $inventario->establecimiento_id = $request->get('establecimiento_id');
