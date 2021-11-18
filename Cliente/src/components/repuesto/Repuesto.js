@@ -1,11 +1,11 @@
 import React, { Component } from "react";
 import DataTable from "../datatable/DataTable";
 import BotonesTable from "../datatable/BotonesTable";
-import { Button } from "react-bootstrap";
+import { Button, Form, OverlayTrigger, Tooltip } from "react-bootstrap";
 import ModalCU from "../modal/ModalCU";
-import { Form } from "react-bootstrap";
 import axios from "axios";
 import Swal from "sweetalert2";
+import { Label } from "reactstrap";
 
 class Repuesto extends Component {
   constructor(props) {
@@ -15,6 +15,8 @@ class Repuesto extends Component {
       inventarios: [],
       modalInsertar: false,
       modalEliminar: false,
+      respuesta: "",
+      image: null,
       inventario: this.props.location.data[0],
       nombreInventario: this.props.location.data[1],
       empresa: this.props.location.data[3],
@@ -100,28 +102,24 @@ class Repuesto extends Component {
 
   //Metodo para guardar
   peticionPost = async () => {
-    console.log(this.state.form);
+    const formData = new FormData();
+    formData.append("nombre_repuesto", this.state.form.nombre_repuesto);
+    formData.append("descripcion", this.state.form.descripcion);
+    formData.append("precio", this.state.form.precio);
+    formData.append("cantidad", this.state.form.cantidad);
+    formData.append("marca", this.state.form.marca);
+    formData.append("imagen", this.state.image);
+    formData.append("descuento", this.state.form.descuento);
+    formData.append("empresa_proveedora", this.state.form.empresa_proveedora);
+    formData.append("inventario_id", this.state.form.inventario_id);
     await axios
-      .post("http://127.0.0.1:8004/api/repuestos/", this.state.form)
+      .post("http://127.0.0.1:8004/api/repuestos/", formData)
       .then((response) => {
         this.modalInsertar();
-        Swal.fire({
-          position: "center",
-          icon: "success",
-          title: "Se a guardado con exito",
-          showConfirmButton: false,
-          timer: 2500,
-        });
-        this.componentDidMount();
+        this.exito("Se a guardado con exito");
       })
       .catch((error) => {
-        Swal.fire({
-          position: "center",
-          icon: "error",
-          title: "Ocurrio un error en el registro del sector",
-          showConfirmButton: false,
-          timer: 2500,
-        });
+        this.errores(error.request.status);
       });
   };
 
@@ -134,23 +132,10 @@ class Repuesto extends Component {
       )
       .then((response) => {
         this.modalInsertar();
-        Swal.fire({
-          position: "center",
-          icon: "success",
-          title: "Se a guardado con exito",
-          showConfirmButton: false,
-          timer: 2500,
-        });
-        this.componentDidMount();
+        this.exito("Se a guardado con exito");
       })
       .catch((error) => {
-        Swal.fire({
-          position: "center",
-          icon: "error",
-          title: "Ocurrio un error en actualizar el sector",
-          showConfirmButton: false,
-          timer: 2500,
-        });
+        this.errores(error.request.status);
       });
   };
 
@@ -160,24 +145,42 @@ class Repuesto extends Component {
       .delete("http://127.0.0.1:8004/api/repuestos/" + this.state.form.id)
       .then((response) => {
         this.setState({ modalEliminar: false });
-        Swal.fire({
-          position: "center",
-          icon: "success",
-          title: "Se a eliminado con exito",
-          showConfirmButton: false,
-          timer: 2500,
-        });
-        this.componentDidMount();
+        this.exito("Se a eliminado con exito");
       })
       .catch((error) => {
-        Swal.fire({
-          position: "center",
-          icon: "error",
-          title: "Ocurrio un error en el eliminar el sector",
-          showConfirmButton: false,
-          timer: 2500,
-        });
+        this.errores(error.request.status);
       });
+  };
+
+  errores = (estado) => {
+    if (estado === 422) {
+      this.setState({ respuesta: "Debe ingresar todos los campos requeridos" });
+    } else {
+      this.setState({ respuesta: "No hay conexion con la Base de Datos" });
+    }
+    Swal.fire({
+      position: "center",
+      icon: "error",
+      title: "Error",
+      html: this.state.respuesta,
+      showConfirmButton: true,
+    });
+  };
+
+  exito = (mensaje) => {
+    Swal.fire({
+      position: "center",
+      icon: "success",
+      title: mensaje,
+      showConfirmButton: false,
+      timer: 2500,
+    });
+    this.componentDidMount();
+  };
+
+  hanldeImagen = (e) => {
+    const imagenes = e.target.files[0];
+    this.setState({ image: imagenes });
   };
 
   render() {
@@ -224,6 +227,15 @@ class Repuesto extends Component {
       {
         name: "imagen",
         label: "Imagen",
+        /* options: {
+          customBodyRender: (value, tableMeta, updateValue) => {
+            return (
+              <Image
+                src={"../../../../AdminEstablecimiento/public/" + value}
+              ></Image>
+            );
+          },
+        }, */
       },
       {
         name: "descuento",
@@ -303,105 +315,128 @@ class Repuesto extends Component {
           tipoModal={this.state.tipoModal}
           titulo="repuesto"
           formulario={
-            <>
+            <Form validated={true} enctype="multipart/form-data">
               <Form.Group>
-                <Form.Label>Nombre</Form.Label>
+                <Form.Label>Nombre*</Form.Label>
                 <Form.Control
                   type="text"
                   id="nombre_repuesto"
                   name="nombre_repuesto"
                   placeholder="Radiador"
+                  maxLength="200"
+                  autoComplete="nope"
                   required={true}
                   value={form ? form.nombre_repuesto : ""}
                   onChange={this.handleChange}
                 />
               </Form.Group>
               <Form.Group>
-                <Form.Label>Descripción</Form.Label>
+                <Form.Label>Descripción*</Form.Label>
                 <Form.Control
                   type="text"
                   id="descripcion"
                   name="descripcion"
                   placeholder="Automaticos pesados..."
+                  maxLength="250"
+                  autoComplete="nope"
                   required={true}
                   value={form ? form.descripcion : ""}
                   onChange={this.handleChange}
                 />
               </Form.Group>
               <Form.Group>
-                <Form.Label>Precio</Form.Label>
+                <Form.Label>Precio*</Form.Label>
                 <Form.Control
-                  type="text"
+                  type="number"
                   id="precio"
                   name="precio"
                   placeholder="60.25"
+                  min="0.01"
+                  max="9999999999"
+                  step="0.01"
+                  maxLength="13"
+                  autoComplete="nope"
                   required={true}
                   value={form ? form.precio : ""}
                   onChange={this.handleChange}
                 />
               </Form.Group>
               <Form.Group>
-                <Form.Label>Existencias</Form.Label>
+                <Form.Label>Existencias*</Form.Label>
                 <Form.Control
-                  type="text"
+                  type="number"
                   id="cantidad"
                   name="cantidad"
                   placeholder="10"
+                  autoComplete="nope"
+                  min="1"
+                  max="100000"
+                  step="1"
                   required={true}
                   value={form ? form.cantidad : ""}
                   onChange={this.handleChange}
                 />
               </Form.Group>
               <Form.Group>
-                <Form.Label>Marca</Form.Label>
+                <Form.Label>Marca*</Form.Label>
                 <Form.Control
                   type="text"
                   id="marca"
                   name="marca"
                   placeholder="Toyota"
+                  maxLength="50"
+                  autoComplete="nope"
                   required={true}
                   value={form ? form.marca : ""}
                   onChange={this.handleChange}
                 />
               </Form.Group>
               <Form.Group>
-                <Form.Label>Dirección imagen</Form.Label>
-                <Form.Control
-                  type="text"
-                  id="imagen"
-                  name="imagen"
-                  placeholder="../Repuestos/..."
-                  required={true}
-                  value={form ? form.imagen : ""}
-                  onChange={this.handleChange}
-                />
+                <Form.Label>Imagen*</Form.Label>
+                <OverlayTrigger
+                  overlay={<Tooltip>Archivo formato: png, jpg...</Tooltip>}
+                >
+                  <Form.Control
+                    type="file"
+                    id="imagen"
+                    name="imagen"
+                    required={true}
+                    onChange={this.hanldeImagen}
+                  />
+                </OverlayTrigger>
               </Form.Group>
               <Form.Group>
-                <Form.Label>Descuento</Form.Label>
+                <Form.Label>Descuento*</Form.Label>
                 <Form.Control
-                  type="text"
+                  type="number"
                   id="descuento"
                   name="descuento"
                   placeholder="50"
+                  autoComplete="nope"
+                  min="0"
+                  max="100"
+                  step="1"
                   required={true}
                   value={form ? form.descuento : ""}
                   onChange={this.handleChange}
                 />
               </Form.Group>
               <Form.Group>
-                <Form.Label>Proveedor</Form.Label>
+                <Form.Label>Proveedor*</Form.Label>
                 <Form.Control
                   type="text"
                   id="empresa_proveedora"
                   name="empresa_proveedora"
                   placeholder="Toyota"
+                  maxLength="200"
+                  autoComplete="nope"
                   required={true}
                   value={form ? form.empresa_proveedora : ""}
                   onChange={this.handleChange}
                 />
               </Form.Group>
               <Form.Group>
-                <Form.Label>Inventario</Form.Label>
+                <Form.Label>Inventario*</Form.Label>
                 <Form.Select
                   id="inventario_id"
                   name="inventario_id"
@@ -419,7 +454,10 @@ class Repuesto extends Component {
                   ))}
                 </Form.Select>
               </Form.Group>
-            </>
+              <div className="obligatorio">
+                <Label>Datos requeridos (*)</Label>
+              </div>
+            </Form>
           }
           pieModalCrear={
             <>

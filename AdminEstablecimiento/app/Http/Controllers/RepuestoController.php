@@ -47,13 +47,33 @@ class RepuestoController extends Controller
      */
     public function store(Request $request)
     {
+        $request->validate([
+            'nombre_repuesto' => 'required|max:200',
+            'descripcion' => 'required|max:250',
+            'precio' => 'required|numeric|max:13',
+            'cantidad' => 'required|integer',
+            'marca' => 'required|max:50',
+            'imagen' => 'required|image',
+            'descuento' => 'required|integer',
+            'empresa_proveedora' => 'required|max:200',
+            'inventario_id' => 'required',
+        ]); 
+
         $repuesto = new Repuesto();
         $repuesto->nombre_repuesto = $request->get('nombre_repuesto');
         $repuesto->descripcion = $request->get('descripcion');
         $repuesto->precio = $request->get('precio');
         $repuesto->cantidad = $request->get('cantidad');
         $repuesto->marca = $request->get('marca');
-        $repuesto->imagen = $request->get('imagen');
+
+        if ($request->hasFile('imagen')) {
+            $file = $request->file('imagen');
+            $destino = 'imagenesRepuestos/';
+            $nombreImagen = $file->getClientOriginalName(); //El nombre con el que se guardaran las imagenes
+            $uploadSuccess = $request->file('imagen')->move($destino, $nombreImagen);
+            $repuesto->imagen = $destino . $nombreImagen;
+        }
+
         $repuesto->descuento = $request->get('descuento');
         $repuesto->empresa_proveedora = $request->get('empresa_proveedora');
         $repuesto->inventario_id = $request->get('inventario_id');
@@ -91,13 +111,33 @@ class RepuestoController extends Controller
      */
     public function update(Request $request)
     {
+        $request->validate([
+            'nombre_repuesto' => 'required|max:200',
+            'descripcion' => 'required|max:250',
+            'precio' => 'required|max:13',
+            'cantidad' => 'required|integer',
+            'marca' => 'required|max:50',
+            'imagen' => 'required|file|size:5120',
+            'descuento' => 'required|integer',
+            'empresa_proveedora' => 'required|max:200',
+            'inventario_id' => 'required',
+        ]);
+
         $repuesto = Repuesto::findOrFail($request->id);
         $repuesto->nombre_repuesto = $request->get('nombre_repuesto');
         $repuesto->descripcion = $request->get('descripcion');
         $repuesto->precio = $request->get('precio');
         $repuesto->cantidad = $request->get('cantidad');
         $repuesto->marca = $request->get('marca');
-        $repuesto->imagen = $request->get('imagen');
+
+        if ($request->hasFile('imagen')) {
+            $file = $request->file('imagen');
+            $destino = 'imagenesRepuestos/';
+            $nombreImagen = $file->getClientOriginalName(); //El nombre con el que se guardaran las imagenes
+            $uploadSuccess = $request->file('imagen')->move($destino, $nombreImagen);
+            $repuesto->imagen = $destino . $nombreImagen;
+        }
+
         $repuesto->descuento = $request->get('descuento');
         $repuesto->empresa_proveedora = $request->get('empresa_proveedora');
         $repuesto->inventario_id = $request->get('inventario_id');
@@ -183,7 +223,7 @@ class RepuestoController extends Controller
                 ->join('municipios', 'municipios.id', '=', 'establecimientos.municipio_id')
                 ->join('departamentos', 'departamentos.id', '=', 'municipios.departamento_id')
                 ->select('repuestos.nombre_repuesto', 'repuestos.descripcion', 'repuestos.precio', 'repuestos.cantidad', 'repuestos.marca', 'repuestos.imagen', 'establecimientos.nombre_establecimiento', 'departamentos.nombre_departamento', 'inventarios.tipo')
-                ->where([['repuestos.precio', '<=', $precio],['inventarios.tipo', '=', $tipo]])
+                ->where([['repuestos.precio', '<=', $precio], ['inventarios.tipo', '=', $tipo]])
                 ->get();
             return $existencia;
         } catch (Exception $e) {
@@ -191,7 +231,8 @@ class RepuestoController extends Controller
         }
     }
 
-    public function repuestoInventario(Request $request){
+    public function repuestoInventario(Request $request)
+    {
         /* Variables */
         $inventario = $request->get('inventario');
         /* Validacion de la query */

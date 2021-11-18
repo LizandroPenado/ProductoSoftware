@@ -20,3 +20,8 @@
   width:"50"; 
   height:"50";
 }
+
+.obligatorio{
+  color:red;
+  text-align: right;
+}

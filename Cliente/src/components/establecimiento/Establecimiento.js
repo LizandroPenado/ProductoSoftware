@@ -1,11 +1,11 @@
 import React, { Component } from "react";
 import DataTable from "../datatable/DataTable";
 import BotonesTable from "../datatable/BotonesTable";
-import { Button } from "react-bootstrap";
+import { Button, Form } from "react-bootstrap";
 import ModalCU from "../modal/ModalCU";
-import { Form } from "react-bootstrap";
 import axios from "axios";
 import Swal from "sweetalert2";
+import { Label } from "reactstrap";
 
 class Establecimiento extends Component {
   constructor(props) {
@@ -14,6 +14,7 @@ class Establecimiento extends Component {
       establecimientos: [],
       departamentos: [],
       municipios: [],
+      respuesta: "",
       modalInsertar: false,
       modalEliminar: false,
       form: {
@@ -137,23 +138,10 @@ class Establecimiento extends Component {
       .post("http://127.0.0.1:8004/api/establecimientos/", this.state.form)
       .then((response) => {
         this.modalInsertar();
-        Swal.fire({
-          position: "center",
-          icon: "success",
-          title: "Se a guardado con exito",
-          showConfirmButton: false,
-          timer: 2500,
-        });
-        this.componentDidMount();
+        this.exito("Se a guardado con exito");
       })
       .catch((error) => {
-        Swal.fire({
-          position: "center",
-          icon: "error",
-          title: "Ocurrio un error en el registro del sector",
-          showConfirmButton: false,
-          timer: 2500,
-        });
+        this.errores(error.request.status);
       });
   };
 
@@ -168,23 +156,10 @@ class Establecimiento extends Component {
       )
       .then((response) => {
         this.modalInsertar();
-        Swal.fire({
-          position: "center",
-          icon: "success",
-          title: "Se a guardado con exito",
-          showConfirmButton: false,
-          timer: 2500,
-        });
-        this.componentDidMount();
+        this.exito("Se a guardado con exito");
       })
       .catch((error) => {
-        Swal.fire({
-          position: "center",
-          icon: "error",
-          title: "Ocurrio un error en actualizar el sector",
-          showConfirmButton: false,
-          timer: 2500,
-        });
+        this.errores(error.request.status);
       });
   };
 
@@ -196,24 +171,37 @@ class Establecimiento extends Component {
       )
       .then((response) => {
         this.setState({ modalEliminar: false });
-        Swal.fire({
-          position: "center",
-          icon: "success",
-          title: "Se a eliminado con exito",
-          showConfirmButton: false,
-          timer: 2500,
-        });
-        this.componentDidMount();
+        this.exito("Se a eliminado con exito");
       })
       .catch((error) => {
-        Swal.fire({
-          position: "center",
-          icon: "error",
-          title: "Ocurrio un error en el eliminar el sector",
-          showConfirmButton: false,
-          timer: 2500,
-        });
+        this.errores(error.request.status);
       });
+  };
+
+  errores = (estado) => {
+    if (estado === 422) {
+      this.setState({ respuesta: "Debe ingresar todos los campos requeridos" });
+    } else {
+      this.setState({ respuesta: "No hay conexion con la Base de Datos" });
+    }
+    Swal.fire({
+      position: "center",
+      icon: "error",
+      title: "Error",
+      html: this.state.respuesta,
+      showConfirmButton: true,
+    });
+  };
+
+  exito = (mensaje) => {
+    Swal.fire({
+      position: "center",
+      icon: "success",
+      title: mensaje,
+      showConfirmButton: false,
+      timer: 2500,
+    });
+    this.componentDidMount();
   };
 
   render() {
@@ -314,45 +302,52 @@ class Establecimiento extends Component {
           tipoModal={this.state.tipoModal}
           titulo="establecimiento"
           formulario={
-            <>
+            <Form validated={true}>
               <Form.Group>
-                <Form.Label>Nombre</Form.Label>
+                <Form.Label>Nombre*</Form.Label>
                 <Form.Control
                   type="text"
                   id="nombre_establecimiento"
                   name="nombre_establecimiento"
                   placeholder="Empresa Repuesto"
+                  maxLength="100"
+                  autoComplete="nope"
                   required={true}
                   value={form ? form.nombre_establecimiento : ""}
                   onChange={this.handleChange}
                 />
               </Form.Group>
               <Form.Group>
-                <Form.Label>Telefóno</Form.Label>
+                <Form.Label>Telefóno*</Form.Label>
                 <Form.Control
                   type="text"
                   id="telefono"
                   name="telefono"
-                  placeholder="9999-9999"
+                  placeholder="77778888"
+                  maxLength="8"
+                  minLength="8"
+                  autoComplete="nope"
                   required={true}
                   value={form ? form.telefono : ""}
                   onChange={this.handleChange}
                 />
               </Form.Group>
               <Form.Group>
-                <Form.Label>Encargado</Form.Label>
+                <Form.Label>Encargado*</Form.Label>
                 <Form.Control
                   type="text"
                   id="encargado"
                   name="encargado"
                   placeholder="Jesus Rodriguez"
+                  maxLength="50"
+                  autoComplete="nope"
                   required={true}
                   value={form ? form.encargado : ""}
                   onChange={this.handleChange}
                 />
               </Form.Group>
               <Form.Group>
-                <Form.Label>Departamento</Form.Label>
+                <Form.Label>Departamento*</Form.Label>
                 <Form.Select
                   id="departamento"
                   name="departamento"
@@ -371,7 +366,7 @@ class Establecimiento extends Component {
                 </Form.Select>
               </Form.Group>
               <Form.Group>
-                <Form.Label>Municipio</Form.Label>
+                <Form.Label>Municipio*</Form.Label>
                 <Form.Select
                   id="municipio_id"
                   name="municipio_id"
@@ -390,17 +385,22 @@ class Establecimiento extends Component {
                 </Form.Select>
               </Form.Group>
               <Form.Group>
-                <Form.Label>Dirección</Form.Label>
+                <Form.Label>Dirección*</Form.Label>
                 <Form.Control
                   type="text"
                   id="direccion"
                   name="direccion"
+                  maxLength="200"
+                  autoComplete="nope"
                   required={true}
                   value={form ? form.direccion : ""}
                   onChange={this.handleChange}
                 ></Form.Control>
               </Form.Group>
-            </>
+              <div className="obligatorio">
+                <Label>Datos requeridos (*)</Label>
+              </div>
+            </Form>
           }
           pieModalCrear={
             <>

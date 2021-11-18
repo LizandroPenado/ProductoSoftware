@@ -10,6 +10,7 @@ import axios from "axios";
 import Swal from "sweetalert2";
 import { Link } from "react-router-dom";
 import Repuesto from "../repuesto/Repuesto";
+import {Label} from "reactstrap";
 
 class Inventario extends Component {
   constructor(props) {
@@ -17,6 +18,7 @@ class Inventario extends Component {
     this.state = {
       inventarios: [],
       establecimientos: [],
+      respuesta: "",
       modalInsertar: false,
       modalEliminar: false,
       form: {
@@ -102,23 +104,10 @@ class Inventario extends Component {
       .post("http://127.0.0.1:8004/api/inventarios/", this.state.form)
       .then((response) => {
         this.modalInsertar();
-        Swal.fire({
-          position: "center",
-          icon: "success",
-          title: "Se a guardado con exito",
-          showConfirmButton: false,
-          timer: 2500,
-        });
-        this.componentDidMount();
+        this.exito("Se a guardado con exito");
       })
       .catch((error) => {
-        Swal.fire({
-          position: "center",
-          icon: "error",
-          title: "Ocurrio un error en el registro del sector",
-          showConfirmButton: false,
-          timer: 2500,
-        });
+        this.errores(error.request.status);
       });
   };
 
@@ -131,23 +120,10 @@ class Inventario extends Component {
       )
       .then((response) => {
         this.modalInsertar();
-        Swal.fire({
-          position: "center",
-          icon: "success",
-          title: "Se a guardado con exito",
-          showConfirmButton: false,
-          timer: 2500,
-        });
-        this.componentDidMount();
+        this.exito("Se a guardado con exito");
       })
       .catch((error) => {
-        Swal.fire({
-          position: "center",
-          icon: "error",
-          title: "Ocurrio un error en actualizar el sector",
-          showConfirmButton: false,
-          timer: 2500,
-        });
+        this.errores(error.request.status);
       });
   };
 
@@ -157,28 +133,41 @@ class Inventario extends Component {
       .delete("http://127.0.0.1:8004/api/inventarios/" + this.state.form.id)
       .then((response) => {
         this.setState({ modalEliminar: false });
-        Swal.fire({
-          position: "center",
-          icon: "success",
-          title: "Se a eliminado con exito",
-          showConfirmButton: false,
-          timer: 2500,
-        });
-        this.componentDidMount();
+        this.exito("Se a eliminado con exito");
       })
       .catch((error) => {
-        Swal.fire({
-          position: "center",
-          icon: "error",
-          title: "Ocurrio un error en el eliminar el sector",
-          showConfirmButton: false,
-          timer: 2500,
-        });
+        this.errores(error.request.status);
       });
   };
 
   handleSeleccion = () => {
     <Repuesto />;
+  };
+
+  errores = (estado) => {
+    if (estado === 422) {
+      this.setState({ respuesta: "Debe ingresar todos los campos requeridos" });
+    } else {
+      this.setState({ respuesta: "No hay conexion con la Base de Datos" });
+    }
+    Swal.fire({
+      position: "center",
+      icon: "error",
+      title: "Error",
+      html: this.state.respuesta,
+      showConfirmButton: true,
+    });
+  };
+
+  exito = (mensaje) => {
+    Swal.fire({
+      position: "center",
+      icon: "success",
+      title: mensaje,
+      showConfirmButton: false,
+      timer: 2500,
+    });
+    this.componentDidMount();
   };
 
   render() {
@@ -230,7 +219,7 @@ class Inventario extends Component {
                 />
 
                 <Tooltip title="Gestionar">
-                  <Link to={{pathname: '/repuesto', data: tableMeta.rowData}}>
+                  <Link to={{ pathname: "/repuesto", data: tableMeta.rowData }}>
                     <Button size="sm" variant="outline-secondary">
                       <AssignmentIcon></AssignmentIcon>
                     </Button>
@@ -266,21 +255,23 @@ class Inventario extends Component {
           tipoModal={this.state.tipoModal}
           titulo="inventario"
           formulario={
-            <>
+            <Form validated={true}>
               <Form.Group>
-                <Form.Label>Tipo</Form.Label>
+                <Form.Label>Tipo*</Form.Label>
                 <Form.Control
                   type="text"
                   id="tipo"
                   name="tipo"
                   placeholder="Neumaticos"
+                  maxLength="50"
+                  autoComplete="nope"
                   required={true}
                   value={form ? form.tipo : ""}
                   onChange={this.handleChange}
                 />
               </Form.Group>
               <Form.Group>
-                <Form.Label>Establecimiento</Form.Label>
+                <Form.Label>Establecimiento*</Form.Label>
                 <Form.Select
                   id="establecimiento_id"
                   name="establecimiento_id"
@@ -298,7 +289,10 @@ class Inventario extends Component {
                   ))}
                 </Form.Select>
               </Form.Group>
-            </>
+              <div className="obligatorio">
+                <Label>Datos requeridos (*)</Label>
+              </div>
+            </Form>
           }
           pieModalCrear={
             <>
