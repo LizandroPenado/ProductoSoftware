@@ -10,7 +10,8 @@ import axios from "axios";
 import Swal from "sweetalert2";
 import { Link } from "react-router-dom";
 import Repuesto from "../repuesto/Repuesto";
-import {Label} from "reactstrap";
+import { Label } from "reactstrap";
+import AddIcon from "@mui/icons-material/Add";
 
 class Inventario extends Component {
   constructor(props) {
@@ -235,15 +236,17 @@ class Inventario extends Component {
       <>
         <DataTable
           agregar={
-            <Button
-              variant="success"
-              onClick={() => {
-                this.setState({ form: null, tipoModal: "insertar" });
-                this.modalInsertar();
-              }}
-            >
-              Agregar
-            </Button>
+            <Tooltip title="Agregar inventario" placement="top" arrow>
+              <Button
+                variant="success"
+                onClick={() => {
+                  this.setState({ form: null, tipoModal: "insertar" });
+                  this.modalInsertar();
+                }}
+              >
+                <AddIcon />
+              </Button>
+            </Tooltip>
           }
           titulo="Inventario de establecimientos"
           noRegistro="No hay registro de inventarios"

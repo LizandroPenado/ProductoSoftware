@@ -133,7 +133,7 @@ class RepuestoController extends Controller
         if ($request->hasFile('imagen')) {
             $file = $request->file('imagen');
             $destino = 'imagenesRepuestos/';
-            $nombreImagen = $file->getClientOriginalName(); //El nombre con el que se guardaran las imagenes
+            $nombreImagen = time() . '-' . $file->getClientOriginalName(); //El nombre con el que se guardaran las imagenes
             $uploadSuccess = $request->file('imagen')->move($destino, $nombreImagen);
             $repuesto->imagen = $destino . $nombreImagen;
         }

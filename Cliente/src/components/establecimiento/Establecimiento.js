@@ -6,6 +6,8 @@ import ModalCU from "../modal/ModalCU";
 import axios from "axios";
 import Swal from "sweetalert2";
 import { Label } from "reactstrap";
+import AddIcon from "@mui/icons-material/Add";
+import { Tooltip } from "@material-ui/core";
 
 class Establecimiento extends Component {
   constructor(props) {
@@ -109,6 +111,18 @@ class Establecimiento extends Component {
 
   //Metodo para guardar el establecimiento seleccionado
   seleccionEstablecimiento = (establecimiento) => {
+    axios
+      .get("http://127.0.0.1:8004/api/municipios/departamentos/", {
+        params: {
+          departamento: establecimiento[4],
+        },
+      })
+      .then((response) => {
+        this.setState({ municipios: response.data });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
     this.setState({
       tipoModal: "actualizar",
       form: {
@@ -280,15 +294,17 @@ class Establecimiento extends Component {
         {/* Componente tabla */}
         <DataTable
           agregar={
-            <Button
-              variant="success"
-              onClick={() => {
-                this.setState({ form: null, tipoModal: "insertar" });
-                this.modalInsertar();
-              }}
-            >
-              Agregar
-            </Button>
+            <Tooltip title="Agregar establecimiento" placement="top" arrow>
+              <Button
+                variant="success"
+                onClick={() => {
+                  this.setState({ form: null, tipoModal: "insertar" });
+                  this.modalInsertar();
+                }}
+              >
+                <AddIcon />
+              </Button>
+            </Tooltip>
           }
           titulo="Establecimientos"
           noRegistro="No hay registro de establecimientos"

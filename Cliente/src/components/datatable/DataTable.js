@@ -50,13 +50,18 @@ export default function dataTable(props) {
   return (
     <Container fluid="xxl">
       <Row>
-        <div className="text-center titulo-empresa">
-          {props.empresa}
-        </div>
+        <div className="text-center titulo-empresa">{props.empresa}</div>
       </Row>
       <Row>
-        <Col sm={2} align="right" className="pt-3">
-          <div className="pb-4">{props.agregar}</div>
+        <Col sm={2} className="pt-3">
+          <Row>
+            <Col align="left">
+              <div className="pb-4">{props.regresar}</div>
+            </Col>
+            <Col align="right">
+              <div className="pb-4">{props.agregar}</div>
+            </Col>
+          </Row>
         </Col>
         <Col sm={10}>
           <MUIDataTable

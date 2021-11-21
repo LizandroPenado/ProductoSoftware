@@ -6,6 +6,8 @@ import BotonesModalEliminar from "../modal/BotonesEliminar";
 import { Button } from "react-bootstrap";
 import ModalCU from "../modal/ModalCU";
 import { Form } from "react-bootstrap";
+import AddIcon from "@mui/icons-material/Add";
+import { Tooltip } from "@material-ui/core";
 
 const data = [
   {
@@ -19,7 +21,7 @@ const data = [
   {
     codigo: "EST",
     nombre: "Establecimiento",
-  },  
+  },
 ];
 
 class Rol extends Component {
@@ -117,16 +119,18 @@ class Rol extends Component {
       <>
         <DataTable
           agregar={
-            <Button
-              variant="success"
-              onClick={() => {
-                this.setState({ form: null, tipoModal: "insertar" });
-                this.modalInsertar();
-              }}
-            >
-              Agregar
-            </Button>
-          } 
+            <Tooltip title="Agregar rol" placement="left" arrow>
+              <Button
+                variant="success"
+                onClick={() => {
+                  this.setState({ form: null, tipoModal: "insertar" });
+                  this.modalInsertar();
+                }}
+              >
+                <AddIcon/>
+              </Button>
+            </Tooltip>
+          }
           titulo="Roles"
           noRegistro="No hay registro de roles"
           columnas={columns}
@@ -139,7 +143,7 @@ class Rol extends Component {
           formulario={
             <>
               <Form.Group>
-              <Form.Label>Codigo</Form.Label>
+                <Form.Label>Codigo</Form.Label>
                 <Form.Control
                   type="text"
                   id="codigo"
@@ -151,7 +155,7 @@ class Rol extends Component {
                 />
               </Form.Group>
               <Form.Group>
-              <Form.Label>Nombre Rol</Form.Label>
+                <Form.Label>Nombre Rol</Form.Label>
                 <Form.Control
                   type="text"
                   id="nombre"
