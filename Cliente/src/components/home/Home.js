@@ -6,6 +6,9 @@ import "./Home.css";
 import axios from "axios";
 import Imagen1 from "./img/llantas_pesadas.jpg";
 import Filtrado from "./Filtrado";
+import ContactMailIcon from "@mui/icons-material/ContactMail";
+import CompareIcon from "@mui/icons-material/Compare";
+import { Tooltip } from "@material-ui/core";
 
 class Home extends Component {
   constructor(props) {
@@ -134,7 +137,7 @@ class Home extends Component {
               <div>
                 <Button variant="success" onClick={() => this.handleBusqueda()}>
                   <SearchIcon />
-                  Buscar
+                  <span className="texto-boton">Buscar</span>
                 </Button>
               </div>
             </Col>
@@ -162,21 +165,35 @@ class Home extends Component {
                       botones={
                         <>
                           <Row>
-                            <Col className="pt-2">
-                              <Button variant="primary">Contactar</Button>
-                            </Col>
-                            <Col className="pt-2">
-                              <Button
-                                variant="secondary"
-                                onClick={() =>
-                                  this.handleComparacion(
-                                    elemento.tipo,
-                                    elemento.precio
-                                  )
-                                }
+                            <Col className="pt-2" align="left">
+                              <Tooltip
+                                title="Contactar establecimiento"
+                                placement="right"
+                                arrow
                               >
-                                Comparar
-                              </Button>
+                                <Button variant="primary">
+                                  <ContactMailIcon />
+                                </Button>
+                              </Tooltip>
+                            </Col>
+                            <Col className="pt-2" align="right">
+                              <Tooltip
+                                title="Comparar repuesto (Precio y tipo)"
+                                placement="left"
+                                arrow
+                              >
+                                <Button
+                                  variant="secondary"
+                                  onClick={() =>
+                                    this.handleComparacion(
+                                      elemento.tipo,
+                                      elemento.precio
+                                    )
+                                  }
+                                >
+                                  <CompareIcon />
+                                </Button>
+                              </Tooltip>
                             </Col>
                           </Row>
                         </>

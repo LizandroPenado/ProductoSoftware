@@ -6,6 +6,8 @@ import BotonesModalEliminar from "../modal/BotonesEliminar";
 import { Button } from "react-bootstrap";
 import ModalCU from "../modal/ModalCU";
 import { Form } from "react-bootstrap";
+import AddIcon from "@mui/icons-material/Add";
+import { Tooltip } from "@material-ui/core";
 
 const data = [
   {
@@ -127,15 +129,17 @@ class Usuario extends Component {
       <>
         <DataTable
           agregar={
-            <Button
-              variant="success"
-              onClick={() => {
-                this.setState({ form: null, tipoModal: "insertar" });
-                this.modalInsertar();
-              }}
-            >
-              Agregar
-            </Button>
+            <Tooltip title="Agregar usuario" placement="left" arrow>
+              <Button
+                variant="success"
+                onClick={() => {
+                  this.setState({ form: null, tipoModal: "insertar" });
+                  this.modalInsertar();
+                }}
+              >
+                <AddIcon />
+              </Button>
+            </Tooltip>
           }
           titulo="Usuarios"
           noRegistro="No hay registro de usuarios"

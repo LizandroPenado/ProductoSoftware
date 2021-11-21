@@ -11,6 +11,7 @@ import Establecimiento from "./components/establecimiento/Establecimiento";
 import Rol from "./components/rol/Rol";
 import Usuario from "./components/usuario/Usuario";
 import Chat from "./components/chat/Inicio";
+import Registro from "./components/login/Registro";
 
 function App() {
   return (
@@ -27,6 +28,7 @@ function App() {
           <Route path="/usuario" component={Usuario} />
           <Route path="/rol" component={Rol} />
           <Route path="/chat" component={Chat} />
+          <Route path="/registro" component={Registro} />
         </Switch>
       </Router>
       <footer className="fixed-bottom">

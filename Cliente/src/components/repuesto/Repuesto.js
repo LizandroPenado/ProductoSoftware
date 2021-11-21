@@ -1,11 +1,15 @@
 import React, { Component } from "react";
 import DataTable from "../datatable/DataTable";
 import BotonesTable from "../datatable/BotonesTable";
-import { Button, Form, OverlayTrigger, Tooltip } from "react-bootstrap";
+import { Button, Form /* , Image */ } from "react-bootstrap";
 import ModalCU from "../modal/ModalCU";
 import axios from "axios";
 import Swal from "sweetalert2";
 import { Label } from "reactstrap";
+import { Link } from "react-router-dom";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import AddIcon from "@mui/icons-material/Add";
+import { Tooltip } from "@material-ui/core";
 
 class Repuesto extends Component {
   constructor(props) {
@@ -231,11 +235,11 @@ class Repuesto extends Component {
           customBodyRender: (value, tableMeta, updateValue) => {
             return (
               <Image
-                src={"../../../../AdminEstablecimiento/public/" + value}
+                src="https://drive.google.com/drive/u/0/folders/1VlQZ1D0npNjsv1Qlk_SSgj0hSJCKJGZw"
               ></Image>
             );
           },
-        }, */
+        },  */
       },
       {
         name: "descuento",
@@ -292,15 +296,26 @@ class Repuesto extends Component {
         {/* Tabla */}
         <DataTable
           agregar={
-            <Button
-              variant="success"
-              onClick={() => {
-                this.setState({ form: null, tipoModal: "insertar" });
-                this.modalInsertar();
-              }}
-            >
-              Agregar
-            </Button>
+            <Tooltip title="Agregar repuesto" placement="left" arrow>
+              <Button
+                variant="success"
+                onClick={() => {
+                  this.setState({ form: null, tipoModal: "insertar" });
+                  this.modalInsertar();
+                }}
+              >
+                <AddIcon />
+              </Button>
+            </Tooltip>
+          }
+          regresar={
+            <Tooltip title="Regresar a inventarios" placement="left" arrow>
+              <Link to="/inventario">
+                <Button variant="warning">
+                  <ArrowBackIcon />
+                </Button>
+              </Link>
+            </Tooltip>
           }
           empresa={this.state.empresa}
           titulo={" Inventario de " + this.state.nombreInventario}
@@ -393,8 +408,10 @@ class Repuesto extends Component {
               </Form.Group>
               <Form.Group>
                 <Form.Label>Imagen*</Form.Label>
-                <OverlayTrigger
-                  overlay={<Tooltip>Archivo formato: png, jpg...</Tooltip>}
+                <Tooltip
+                  title="Archivo formato: png, jpg..."
+                  placement="top"
+                  arrow
                 >
                   <Form.Control
                     type="file"
@@ -403,7 +420,7 @@ class Repuesto extends Component {
                     required={true}
                     onChange={this.hanldeImagen}
                   />
-                </OverlayTrigger>
+                </Tooltip>
               </Form.Group>
               <Form.Group>
                 <Form.Label>Descuento*</Form.Label>
