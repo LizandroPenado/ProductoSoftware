@@ -10,6 +10,7 @@ import { Link } from "react-router-dom";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import AddIcon from "@mui/icons-material/Add";
 import { Tooltip } from "@material-ui/core";
+import "./repuesto.css";
 
 class Repuesto extends Component {
   constructor(props) {
@@ -89,7 +90,7 @@ class Repuesto extends Component {
       precio_descuento =
         this.state.form.precio_normal -
         this.state.form.precio_normal * (this.state.form.descuento / 100);
-      this.setState({ form: { ...this.state.form, precio: precio_descuento } });
+      this.setState({ form: { ...this.state.form, precio: precio_descuento.toFixed(2) } });
     }
   };
 
@@ -110,7 +111,7 @@ class Repuesto extends Component {
         descuento: repuesto[7],
         empresa_proveedora: repuesto[8],
         inventario_id: repuesto[9],
-        precio_normal: precio_no_descuento,
+        precio_normal: precio_no_descuento.toFixed(2),
       },
     });
   };
@@ -261,7 +262,7 @@ class Repuesto extends Component {
         label: "Imagen",
         options: {
           customBodyRender: (value, tableMeta, updateValue) => {
-            return <Image src={value} />;
+            return <Image src={value} className="imagenes"/>;
           },
         },
       },

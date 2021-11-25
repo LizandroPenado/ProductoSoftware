@@ -25,6 +25,7 @@ function Inicio() {
     <div className="app">
       {usuarioGlobal ? (
         <>
+          {" "}
           <Sidebar
             usuarioGlobal={usuarioGlobal}
             setCanalActivo={setCanalActivo}
@@ -33,7 +34,7 @@ function Inicio() {
         </>
       ) : (
         <>
-          <Login/>
+          <Login />
         </>
       )}
     </div>

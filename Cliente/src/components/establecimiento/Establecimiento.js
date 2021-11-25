@@ -8,6 +8,7 @@ import Swal from "sweetalert2";
 import { Label } from "reactstrap";
 import AddIcon from "@mui/icons-material/Add";
 import { Tooltip } from "@material-ui/core";
+import Navbar from "../layout/Navbar";
 
 class Establecimiento extends Component {
   constructor(props) {
@@ -291,6 +292,8 @@ class Establecimiento extends Component {
     ];
     return (
       <>
+        <Navbar />
+        <div className="pb-4"></div>
         {/* Componente tabla */}
         <DataTable
           agregar={

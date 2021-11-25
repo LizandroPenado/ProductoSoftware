@@ -6,6 +6,7 @@ import ListIcon from '@mui/icons-material/List';
 /* import LocalGroceryStoreIcon from '@mui/icons-material/LocalGroceryStore'; */
 import ChatIcon from '@mui/icons-material/Chat';
 import SupervisorAccountIcon from '@mui/icons-material/SupervisorAccount';
+import StorageIcon from '@mui/icons-material/Storage';
 
 export const SidebarData = [
   {
@@ -50,9 +51,21 @@ export const SidebarData = [
     icon: <SupervisorAccountIcon/>,
     cName: 'nav-text'
   },
-  {
+  /* {
     title: 'Chat',
     path: '/chat',
+    icon: <ChatIcon />,
+    cName: 'nav-text'
+  },   */
+  {
+    title: 'Base de datos',
+    path: '/Conexion',
+    icon: <StorageIcon />,
+    cName: 'nav-text'
+  },  
+  {
+    title: 'Gestionar chat',
+    path: '/gestionChat',
     icon: <ChatIcon />,
     cName: 'nav-text'
   },  

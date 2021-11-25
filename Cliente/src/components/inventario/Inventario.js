@@ -12,6 +12,7 @@ import { Link } from "react-router-dom";
 import Repuesto from "../repuesto/Repuesto";
 import { Label } from "reactstrap";
 import AddIcon from "@mui/icons-material/Add";
+import Navbar from "../layout/Navbar";
 
 class Inventario extends Component {
   constructor(props) {
@@ -234,6 +235,8 @@ class Inventario extends Component {
     ];
     return (
       <>
+        <Navbar />
+        <div className="pb-4"></div>
         <DataTable
           agregar={
             <Tooltip title="Agregar inventario" placement="top" arrow>

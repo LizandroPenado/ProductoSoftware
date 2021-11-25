@@ -8,6 +8,9 @@ import Filtrado from "./Filtrado";
 import ContactMailIcon from "@mui/icons-material/ContactMail";
 import CompareIcon from "@mui/icons-material/Compare";
 import { Tooltip } from "@material-ui/core";
+import Navbar from "../layout/Navbar";
+import { Link } from "react-router-dom";
+import Cookies from "universal-cookie";
 
 class Home extends Component {
   constructor(props) {
@@ -101,10 +104,18 @@ class Home extends Component {
       });
   };
 
+  guardarEstablecimiento = async (establecimiento) => {
+    const cookies = new Cookies();
+    cookies.set('establecimiento', establecimiento, { path: '/chat' });
+    console.log("cookie:" + cookies.get('establecimiento'));
+  };
+
   render() {
     const { form } = this.state;
     return (
       <>
+        <Navbar />
+        <div className="pb-4"></div>
         {/* Menu de busqueda */}
         <Container className="menu-busqueda">
           <Row className="pt-4">
@@ -172,9 +183,24 @@ class Home extends Component {
                                 placement="right"
                                 arrow
                               >
-                                <Button variant="primary">
-                                  <ContactMailIcon />
-                                </Button>
+                                <Link
+                                  to={{
+                                    pathname: "/chat",
+                                    data: elemento.establecimiento,
+                                  }}
+                                >
+                                  <Button
+                                    size="sm"
+                                    variant="primary"
+                                    onClick={() =>
+                                      this.guardarEstablecimiento(
+                                        elemento.establecimiento
+                                      )
+                                    }
+                                  >
+                                    <ContactMailIcon />
+                                  </Button>
+                                </Link>
                               </Tooltip>
                             </Col>
                             <Col className="pt-2" align="right">

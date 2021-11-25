@@ -46,3 +46,6 @@ Route::get('/departamentos', 'App\Http\Controllers\DepartamentoController@index'
 //Municipios
 Route::get('/municipios', 'App\Http\Controllers\MunicipioController@index'); 
 Route::get('/municipios/departamentos', 'App\Http\Controllers\MunicipioController@filtroDepartamento'); 
+
+//Conexion a BD
+Route::post('/conexion', 'App\Http\Controllers\ConexionController@conectar'); 

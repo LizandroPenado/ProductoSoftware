@@ -2,7 +2,6 @@ import React from "react";
 import { Card } from "react-bootstrap";
 
 export default function tarjeta(props) {
-    console.log(props.url);
   return (
     <Card className="tarjeta">
       <Card.Img variant="top" src={props.url} className="card-imagen" alt={"repuesto"}/>
