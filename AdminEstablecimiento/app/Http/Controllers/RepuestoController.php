@@ -50,11 +50,11 @@ class RepuestoController extends Controller
         $request->validate([
             'nombre_repuesto' => 'required|max:200',
             'descripcion' => 'required|max:250',
-            'precio' => 'required|numeric|max:13',
-            'cantidad' => 'required|integer',
+            'precio' => 'required|numeric|max:9999999999',
+            'cantidad' => 'required|integer|max:100000',
             'marca' => 'required|max:50',
             'imagen' => 'required|image',
-            'descuento' => 'required|integer',
+            'descuento' => 'required|integer|max:100',
             'empresa_proveedora' => 'required|max:200',
             'inventario_id' => 'required',
         ]); 
@@ -68,10 +68,11 @@ class RepuestoController extends Controller
 
         if ($request->hasFile('imagen')) {
             $file = $request->file('imagen');
-            $destino = 'imagenesRepuestos/';
-            $nombreImagen = $file->getClientOriginalName(); //El nombre con el que se guardaran las imagenes
+            //La parte "d:/Proyectos/IGF/ProductoSoftware" debe sustituirse depediendo adonde tenga el proyecto
+            $destino = 'd:/Proyectos/IGF/ProductoSoftware/Cliente/public/imagenes';
+            $nombreImagen = time() . '-' . $file->getClientOriginalName(); //El nombre con el que se guardaran las imagenes
             $uploadSuccess = $request->file('imagen')->move($destino, $nombreImagen);
-            $repuesto->imagen = $destino . $nombreImagen;
+            $repuesto->imagen = "./"."imagenes/" . $nombreImagen;
         }
 
         $repuesto->descuento = $request->get('descuento');
@@ -114,11 +115,11 @@ class RepuestoController extends Controller
         $request->validate([
             'nombre_repuesto' => 'required|max:200',
             'descripcion' => 'required|max:250',
-            'precio' => 'required|max:13',
-            'cantidad' => 'required|integer',
+            'precio' => 'required|numeric|max:9999999999',
+            'cantidad' => 'required|integer|max:100000',
             'marca' => 'required|max:50',
-            'imagen' => 'required|file|size:5120',
-            'descuento' => 'required|integer',
+            'imagen' => 'required|image',
+            'descuento' => 'required|integer|max:100',
             'empresa_proveedora' => 'required|max:200',
             'inventario_id' => 'required',
         ]);

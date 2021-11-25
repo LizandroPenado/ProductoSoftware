@@ -4,7 +4,6 @@ import SearchIcon from "@mui/icons-material/Search";
 import Tarjeta from "./Tarjeta";
 import "./Home.css";
 import axios from "axios";
-import Imagen1 from "./img/llantas_pesadas.jpg";
 import Filtrado from "./Filtrado";
 import ContactMailIcon from "@mui/icons-material/ContactMail";
 import CompareIcon from "@mui/icons-material/Compare";
@@ -52,6 +51,7 @@ class Home extends Component {
             precio: data_inicial[i].precio,
             cantidad: data_inicial[i].cantidad,
             marca: data_inicial[i].marca,
+            imagen: data_inicial[i].imagen,
             tipo: data_inicial[i].tipo,
             establecimiento: data_inicial[i].nombre_establecimiento,
             departamento: data_inicial[i].nombre_departamento,
@@ -86,6 +86,7 @@ class Home extends Component {
             precio: data_inicial[i].precio,
             cantidad: data_inicial[i].cantidad,
             marca: data_inicial[i].marca,
+            imagen: data_inicial[i].imagen,
             tipo: data_inicial[i].tipo,
             establecimiento: data_inicial[i].nombre_establecimiento,
             departamento: data_inicial[i].nombre_departamento,
@@ -153,7 +154,7 @@ class Home extends Component {
                 {this.state.repuestos.map((elemento) => (
                   <Col className="pb-4 pt-4 d-flex justify-content-center alig-items-center">
                     <Tarjeta
-                      url={Imagen1}
+                      url={elemento.imagen}
                       repuesto={elemento.nombre_repuesto}
                       descripcion={elemento.descripcion}
                       precio={elemento.precio}
