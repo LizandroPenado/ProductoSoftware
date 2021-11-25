@@ -45,3 +45,24 @@
 .texto-boton{
     padding-left: 8px;
 }
+
+.bd-form{ 
+	width:500px;
+	margin:20px;
+    border-radius: 20px 20px 20px 20px !important;
+    border: 1px solid rgb(118, 179, 151) !important;
+    box-shadow: 1px 1px 1px #919191, 
+    1px 1px 1px #919191, 
+    1px 1px 1px #919191,
+    1px 1px 1px #919191, 
+    1px 1px 1px #919191, 
+    1px 1px 1px #919191, 
+    1px 18px 6px rgba(16, 16, 16, 0.4),
+    1px 22px 10px rgba(16, 16, 16, 0.2), 
+    1px 25px 35px rgba(16, 16, 16, 0.2),
+    1px 30px 60px rgba(16, 16, 16, 0.4);
+}
+
+.bd-form:hover{
+    transform: scale(1.05);
+  }

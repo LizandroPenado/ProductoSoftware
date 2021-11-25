@@ -4,11 +4,13 @@ import SearchIcon from "@mui/icons-material/Search";
 import Tarjeta from "./Tarjeta";
 import "./Home.css";
 import axios from "axios";
-import Imagen1 from "./img/llantas_pesadas.jpg";
 import Filtrado from "./Filtrado";
 import ContactMailIcon from "@mui/icons-material/ContactMail";
 import CompareIcon from "@mui/icons-material/Compare";
 import { Tooltip } from "@material-ui/core";
+import Navbar from "../layout/Navbar";
+import { Link } from "react-router-dom";
+import Cookies from "universal-cookie";
 
 class Home extends Component {
   constructor(props) {
@@ -52,6 +54,7 @@ class Home extends Component {
             precio: data_inicial[i].precio,
             cantidad: data_inicial[i].cantidad,
             marca: data_inicial[i].marca,
+            imagen: data_inicial[i].imagen,
             tipo: data_inicial[i].tipo,
             establecimiento: data_inicial[i].nombre_establecimiento,
             departamento: data_inicial[i].nombre_departamento,
@@ -86,6 +89,7 @@ class Home extends Component {
             precio: data_inicial[i].precio,
             cantidad: data_inicial[i].cantidad,
             marca: data_inicial[i].marca,
+            imagen: data_inicial[i].imagen,
             tipo: data_inicial[i].tipo,
             establecimiento: data_inicial[i].nombre_establecimiento,
             departamento: data_inicial[i].nombre_departamento,
@@ -100,10 +104,18 @@ class Home extends Component {
       });
   };
 
+  guardarEstablecimiento = async (establecimiento) => {
+    const cookies = new Cookies();
+    cookies.set('establecimiento', establecimiento, { path: '/chat' });
+    console.log("cookie:" + cookies.get('establecimiento'));
+  };
+
   render() {
     const { form } = this.state;
     return (
       <>
+        <Navbar />
+        <div className="pb-4"></div>
         {/* Menu de busqueda */}
         <Container className="menu-busqueda">
           <Row className="pt-4">
@@ -153,7 +165,7 @@ class Home extends Component {
                 {this.state.repuestos.map((elemento) => (
                   <Col className="pb-4 pt-4 d-flex justify-content-center alig-items-center">
                     <Tarjeta
-                      url={Imagen1}
+                      url={elemento.imagen}
                       repuesto={elemento.nombre_repuesto}
                       descripcion={elemento.descripcion}
                       precio={elemento.precio}
@@ -171,9 +183,24 @@ class Home extends Component {
                                 placement="right"
                                 arrow
                               >
-                                <Button variant="primary">
-                                  <ContactMailIcon />
-                                </Button>
+                                <Link
+                                  to={{
+                                    pathname: "/chat",
+                                    data: elemento.establecimiento,
+                                  }}
+                                >
+                                  <Button
+                                    size="sm"
+                                    variant="primary"
+                                    onClick={() =>
+                                      this.guardarEstablecimiento(
+                                        elemento.establecimiento
+                                      )
+                                    }
+                                  >
+                                    <ContactMailIcon />
+                                  </Button>
+                                </Link>
                               </Tooltip>
                             </Col>
                             <Col className="pt-2" align="right">

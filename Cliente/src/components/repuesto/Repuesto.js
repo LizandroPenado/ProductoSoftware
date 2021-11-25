@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import DataTable from "../datatable/DataTable";
 import BotonesTable from "../datatable/BotonesTable";
-import { Button, Form /* , Image */ } from "react-bootstrap";
+import { Button, Form, Row, Col, Image } from "react-bootstrap";
 import ModalCU from "../modal/ModalCU";
 import axios from "axios";
 import Swal from "sweetalert2";
@@ -10,6 +10,7 @@ import { Link } from "react-router-dom";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import AddIcon from "@mui/icons-material/Add";
 import { Tooltip } from "@material-ui/core";
+import "./repuesto.css";
 
 class Repuesto extends Component {
   constructor(props) {
@@ -36,6 +37,7 @@ class Repuesto extends Component {
         descuento: 0,
         empresa_proveedora: "",
         inventario_id: "",
+        precio_normal: 0.0,
       },
     };
   }
@@ -78,10 +80,24 @@ class Repuesto extends Component {
         [e.target.name]: e.target.value,
       },
     });
+    //calcular el precio final con descuento
+    var precio_descuento = 0;
+    if (
+      this.state.form.precio_normal > 0 &&
+      this.state.form.descuento >= 0 &&
+      e.target.name === "descuento"
+    ) {
+      precio_descuento =
+        this.state.form.precio_normal -
+        this.state.form.precio_normal * (this.state.form.descuento / 100);
+      this.setState({ form: { ...this.state.form, precio: precio_descuento.toFixed(2) } });
+    }
   };
 
   //Metodo para seleccionar y mostrar los datos del repuesto
   seleccionRepuesto = (repuesto) => {
+    var precio_no_descuento = this.invertirDescuento(repuesto[3], repuesto[7]);
+    console.log(repuesto);
     this.setState({
       tipoModal: "actualizar",
       form: {
@@ -95,6 +111,7 @@ class Repuesto extends Component {
         descuento: repuesto[7],
         empresa_proveedora: repuesto[8],
         inventario_id: repuesto[9],
+        precio_normal: precio_no_descuento.toFixed(2),
       },
     });
   };
@@ -106,18 +123,8 @@ class Repuesto extends Component {
 
   //Metodo para guardar
   peticionPost = async () => {
-    const formData = new FormData();
-    formData.append("nombre_repuesto", this.state.form.nombre_repuesto);
-    formData.append("descripcion", this.state.form.descripcion);
-    formData.append("precio", this.state.form.precio);
-    formData.append("cantidad", this.state.form.cantidad);
-    formData.append("marca", this.state.form.marca);
-    formData.append("imagen", this.state.image);
-    formData.append("descuento", this.state.form.descuento);
-    formData.append("empresa_proveedora", this.state.form.empresa_proveedora);
-    formData.append("inventario_id", this.state.form.inventario_id);
     await axios
-      .post("http://127.0.0.1:8004/api/repuestos/", formData)
+      .post("http://127.0.0.1:8004/api/repuestos/", this.asignarDatos())
       .then((response) => {
         this.modalInsertar();
         this.exito("Se a guardado con exito");
@@ -129,10 +136,11 @@ class Repuesto extends Component {
 
   //Metodo para actualizar
   peticionPut = () => {
+    console.log(this.state.form);
     axios
       .put(
         "http://127.0.0.1:8004/api/repuestos/" + this.state.form.id + "/",
-        this.state.form
+        this.asignarDatos()
       )
       .then((response) => {
         this.modalInsertar();
@@ -183,8 +191,29 @@ class Repuesto extends Component {
   };
 
   hanldeImagen = (e) => {
-    const imagenes = e.target.files[0];
+    var imagenes = e.target.files[0];
     this.setState({ image: imagenes });
+  };
+
+  asignarDatos = () => {
+    var formData = new FormData();
+    formData.append("nombre_repuesto", this.state.form.nombre_repuesto);
+    formData.append("descripcion", this.state.form.descripcion);
+    formData.append("precio", this.state.form.precio);
+    formData.append("cantidad", this.state.form.cantidad);
+    formData.append("marca", this.state.form.marca);
+    formData.append("imagen", this.state.image);
+    formData.append("descuento", this.state.form.descuento);
+    formData.append("empresa_proveedora", this.state.form.empresa_proveedora);
+    formData.append("inventario_id", this.state.form.inventario_id);
+    return formData;
+  };
+
+  invertirDescuento = (precio_descuento, descuento) => {
+    //Obtener el precio nomal, quitandole descuento
+    var precio_sin_descuento = 0;
+    precio_sin_descuento = (1 * precio_descuento) / (1 - descuento / 100);
+    return precio_sin_descuento;
   };
 
   render() {
@@ -231,15 +260,11 @@ class Repuesto extends Component {
       {
         name: "imagen",
         label: "Imagen",
-        /* options: {
+        options: {
           customBodyRender: (value, tableMeta, updateValue) => {
-            return (
-              <Image
-                src="https://drive.google.com/drive/u/0/folders/1VlQZ1D0npNjsv1Qlk_SSgj0hSJCKJGZw"
-              ></Image>
-            );
+            return <Image src={value} className="imagenes"/>;
           },
-        },  */
+        },
       },
       {
         name: "descuento",
@@ -359,17 +384,55 @@ class Repuesto extends Component {
                   onChange={this.handleChange}
                 />
               </Form.Group>
+              <Row>
+                <Col>
+                  <Form.Group>
+                    <Form.Label>Precio*</Form.Label>
+                    <Form.Control
+                      type="number"
+                      id="precio_normal"
+                      name="precio_normal"
+                      placeholder="60.25"
+                      min="0.01"
+                      max="9999999999"
+                      step="0.01"
+                      autoComplete="nope"
+                      required={true}
+                      value={form ? form.precio_normal : ""}
+                      onChange={this.handleChange}
+                    />
+                  </Form.Group>
+                </Col>
+                <Col>
+                  <Form.Group>
+                    <Form.Label>Descuento*</Form.Label>
+                    <Form.Control
+                      type="number"
+                      id="descuento"
+                      name="descuento"
+                      placeholder="50"
+                      autoComplete="nope"
+                      min="0"
+                      max="100"
+                      step="1"
+                      required={true}
+                      value={form ? form.descuento : ""}
+                      onChange={this.handleChange}
+                    />
+                  </Form.Group>
+                </Col>
+              </Row>
               <Form.Group>
-                <Form.Label>Precio*</Form.Label>
+                <Form.Label>Precio final</Form.Label>
                 <Form.Control
                   type="number"
                   id="precio"
                   name="precio"
                   placeholder="60.25"
                   min="0.01"
+                  readOnly={true}
                   max="9999999999"
                   step="0.01"
-                  maxLength="13"
                   autoComplete="nope"
                   required={true}
                   value={form ? form.precio : ""}
@@ -421,22 +484,6 @@ class Repuesto extends Component {
                     onChange={this.hanldeImagen}
                   />
                 </Tooltip>
-              </Form.Group>
-              <Form.Group>
-                <Form.Label>Descuento*</Form.Label>
-                <Form.Control
-                  type="number"
-                  id="descuento"
-                  name="descuento"
-                  placeholder="50"
-                  autoComplete="nope"
-                  min="0"
-                  max="100"
-                  step="1"
-                  required={true}
-                  value={form ? form.descuento : ""}
-                  onChange={this.handleChange}
-                />
               </Form.Group>
               <Form.Group>
                 <Form.Label>Proveedor*</Form.Label>

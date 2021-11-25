@@ -12,13 +12,15 @@ import Rol from "./components/rol/Rol";
 import Usuario from "./components/usuario/Usuario";
 import Chat from "./components/chat/Inicio";
 import Registro from "./components/login/Registro";
+import BaseDatos from "./components/establecimiento/BaseDatos";
+import GestionChat from "./components/gestionChat/Inicio";
 
 function App() {
   return (
     <main /* className={classes.content} */>
       <Router>
-        <Navbar />
-        <div className="pb-4"></div>
+        {/* <Navbar />
+        <div className="pb-4"></div> */}
         <Switch>
           <Route path="/" exact component={Home} />
           <Route path="/login" component={Login} />
@@ -29,6 +31,8 @@ function App() {
           <Route path="/rol" component={Rol} />
           <Route path="/chat" component={Chat} />
           <Route path="/registro" component={Registro} />
+          <Route path="/conexion" component={BaseDatos} />
+          <Route path="/gestionChat" component={GestionChat} />
         </Switch>
       </Router>
       <footer className="fixed-bottom">

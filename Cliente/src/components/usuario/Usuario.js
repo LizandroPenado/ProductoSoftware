@@ -8,6 +8,7 @@ import ModalCU from "../modal/ModalCU";
 import { Form } from "react-bootstrap";
 import AddIcon from "@mui/icons-material/Add";
 import { Tooltip } from "@material-ui/core";
+import Navbar from "../layout/Navbar";
 
 const data = [
   {
@@ -127,6 +128,8 @@ class Usuario extends Component {
     ];
     return (
       <>
+      <Navbar />
+        <div className="pb-4"></div>
         <DataTable
           agregar={
             <Tooltip title="Agregar usuario" placement="left" arrow>
