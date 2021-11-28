@@ -87,11 +87,15 @@ function Sidebar({ usuarioGlobal, setCanalActivo }) {
           <span className="nombre_usuario">{usuarioGlobal.displayName}</span>
         </div>
         <div className="sidebar__profileIcons">
-          <Link to="/">
-            <Button variant="danger" onClick={() => signOut(auth)}>
-              <LogoutIcon />
-            </Button>
-          </Link>
+          <Tooltip title="Cerrar chat"
+            placement="top"
+            arrow>
+            <Link to="/">
+              <Button variant="danger" onClick={() => signOut(auth)}>
+                <LogoutIcon />
+              </Button>
+            </Link>
+          </Tooltip>
         </div>
       </div>
     </div>

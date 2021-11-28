@@ -120,7 +120,7 @@ class Registro extends Component {
       .catch((error) => {});
   };
 
-  registroUsuario = async () => {
+  registroUsuario = async (e) => {
     await axios
       .post("http://127.0.0.1:8000/api/usuarios/", this.state.form)
       .then((response) => {
@@ -239,7 +239,7 @@ class Registro extends Component {
                     <div className="d-flex justify-content-center">
                       <Button
                         className="boton d-flex justify-content-center"
-                        /* onClick={() => this.usuario()} */
+                       /*  onClick={() => this.usuario()}  */
                       >
                         <PersonAddIcon />
                         <span className="texto-boton">Registrarse</span>

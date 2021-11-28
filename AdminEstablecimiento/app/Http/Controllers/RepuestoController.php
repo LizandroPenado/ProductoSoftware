@@ -19,14 +19,6 @@ class RepuestoController extends Controller
         $repuesto = Repuesto::with('inventario', 'inventario.establecimiento')->get();;
         return $repuesto;
 
-        /* $texto=trim($request->get('texto'));
-
-        $tipo=trim($request->get('tipo'));
-
-       
-       $repuestos = Repuesto::buscarpor($tipo,$texto);
-        
-       return view('articulo.index')->with('articulos', $repuestos);  */
     }
 
     /**
@@ -70,7 +62,7 @@ class RepuestoController extends Controller
             $file = $request->file('imagen');
             //La parte "d:/Proyectos/IGF/ProductoSoftware" debe sustituirse depediendo adonde tenga el proyecto
             $destino = 'd:/Proyectos/IGF/ProductoSoftware/Cliente/public/imagenes';
-            $nombreImagen = time() . '-' . $file->getClientOriginalName(); //El nombre con el que se guardaran las imagenes
+            $nombreImagen = time() . '-' . $file->getClientOriginalName();
             $uploadSuccess = $request->file('imagen')->move($destino, $nombreImagen);
             $repuesto->imagen = "./"."imagenes/" . $nombreImagen;
         }
@@ -134,7 +126,7 @@ class RepuestoController extends Controller
         if ($request->hasFile('imagen')) {
             $file = $request->file('imagen');
             $destino = 'imagenesRepuestos/';
-            $nombreImagen = time() . '-' . $file->getClientOriginalName(); //El nombre con el que se guardaran las imagenes
+            $nombreImagen = time() . '-' . $file->getClientOriginalName();
             $uploadSuccess = $request->file('imagen')->move($destino, $nombreImagen);
             $repuesto->imagen = $destino . $nombreImagen;
         }
@@ -160,39 +152,10 @@ class RepuestoController extends Controller
 
     public function obtenerRepuesto(Request $request)
     {
-        /* Variables */
-        $filtrado = $request->get('filtrado');
-        $busqueda = $request->get('busqueda');
-        $sentencia = "";
-        $condicion = "";
-        $comparacion = "";
-
-        /* Condicional para crear la query dependiendo del filtro seleccionado */
-        if ($filtrado == "precio" && (float)$busqueda > 0) {
-            $sentencia = 'repuestos.' . $filtrado;
-            $condicion = '<=';
-            $comparacion = $busqueda;
-        } else  if ($filtrado == "nombre_establecimiento") {
-            $sentencia = 'establecimientos.nombre_establecimiento';
-            $condicion = 'LIKE';
-            $comparacion = '%' . $busqueda . '%';
-        } else if ($filtrado == "nombre_departamento") {
-            $sentencia = 'departamentos.nombre_departamento';
-            $condicion = 'LIKE';
-            $comparacion = '%' . $busqueda . '%';
-        } else if ($filtrado == "todo") {
-            $sentencia = 'repuestos';
-            $condicion = 'LIKE';
-            $comparacion = '%' . $busqueda . '%';
-        } else if ($filtrado == "tipo") {
-            $sentencia = 'inventarios.' . $filtrado;
-            $condicion = 'LIKE';
-            $comparacion = '%' . $busqueda . '%';
-        } else {
-            $sentencia = 'repuestos.' . $filtrado;
-            $condicion = 'LIKE';
-            $comparacion = '%' . $busqueda . '%';
-        }
+        /* Variables  de request*/
+        $sentencia = $request->get('sentencia');
+        $condicion = $request->get('condicion');
+        $comparacion = $request->get('comparacion');
 
         /* Validacion de la query */
         try {
@@ -212,7 +175,7 @@ class RepuestoController extends Controller
 
     public function compararRepuesto(Request $request)
     {
-        /* Variables */
+        /* Variables de request */
         $tipo = $request->get('tipo');
         $precio = $request->get('precio');
 

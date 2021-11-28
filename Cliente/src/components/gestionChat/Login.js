@@ -20,7 +20,7 @@ function Login() {
         </div>
         <Button onClick={logInConGoogle}>Acceder con Google</Button>
         <Link to="/" className="pt-4">
-          <Button>Regresar al inicio</Button>
+          <Button color="secondary">Regresar al inicio</Button>
         </Link>
       </div>
     </>
