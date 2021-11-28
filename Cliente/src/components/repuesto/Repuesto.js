@@ -90,7 +90,9 @@ class Repuesto extends Component {
       precio_descuento =
         this.state.form.precio_normal -
         this.state.form.precio_normal * (this.state.form.descuento / 100);
-      this.setState({ form: { ...this.state.form, precio: precio_descuento.toFixed(2) } });
+      this.setState({
+        form: { ...this.state.form, precio: precio_descuento.toFixed(2) },
+      });
     }
   };
 
@@ -196,17 +198,21 @@ class Repuesto extends Component {
   };
 
   asignarDatos = () => {
-    var formData = new FormData();
-    formData.append("nombre_repuesto", this.state.form.nombre_repuesto);
-    formData.append("descripcion", this.state.form.descripcion);
-    formData.append("precio", this.state.form.precio);
-    formData.append("cantidad", this.state.form.cantidad);
-    formData.append("marca", this.state.form.marca);
-    formData.append("imagen", this.state.image);
-    formData.append("descuento", this.state.form.descuento);
-    formData.append("empresa_proveedora", this.state.form.empresa_proveedora);
-    formData.append("inventario_id", this.state.form.inventario_id);
-    return formData;
+    try {
+      var formData = new FormData();
+      formData.append("nombre_repuesto", this.state.form.nombre_repuesto);
+      formData.append("descripcion", this.state.form.descripcion);
+      formData.append("precio", this.state.form.precio);
+      formData.append("cantidad", this.state.form.cantidad);
+      formData.append("marca", this.state.form.marca);
+      formData.append("imagen", this.state.image);
+      formData.append("descuento", this.state.form.descuento);
+      formData.append("empresa_proveedora", this.state.form.empresa_proveedora);
+      formData.append("inventario_id", this.state.form.inventario_id);
+      return formData;
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   invertirDescuento = (precio_descuento, descuento) => {
@@ -262,7 +268,7 @@ class Repuesto extends Component {
         label: "Imagen",
         options: {
           customBodyRender: (value, tableMeta, updateValue) => {
-            return <Image src={value} className="imagenes"/>;
+            return <Image src={value} className="imagenes" />;
           },
         },
       },

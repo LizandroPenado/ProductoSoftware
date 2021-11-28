@@ -18,23 +18,6 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-//Ejemplos para rutas
-/* 
-URL Buscar Repuesto
-Route::get('/repuestos', 'App\Http\Controllers\RepuestoController@index');
-Route::post('/repuestos', 'App\Http\Controllers\RepuestoController@store'); 
-Route::put('/repuestos/{id}', 'App\Http\Controllers\RepuestoController@update'); 
-Route::delete('/repuestos/{id}', 'App\Http\Controllers\RepuestoController@destroy');  
-
-URL Comparar Precio
-
-URL Contactar Establecimiento
-
-*/
-
-//Departamentos
-Route::get('/departamentos', 'App\Http\Controllers\DepartamentoController@index'); 
-
-//Municipios
-Route::get('/municipios', 'App\Http\Controllers\MunicipioController@index'); 
-Route::get('/municipios/departamentos', 'App\Http\Controllers\MunicipioController@filtroDepartamento'); 
+//Repuestos
+Route::get('/repuestos/mostrar', 'App\Http\Controllers\RepuestoController@obtenerRepuesto');
+Route::get('/repuestos/comparar', 'App\Http\Controllers\RepuestoController@compararRepuesto');

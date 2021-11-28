@@ -4,6 +4,7 @@ import "./Login.css";
 import LoginIcon from "@mui/icons-material/Login";
 import { Link } from "react-router-dom";
 import Navbar from "../layout/Navbar";
+import Swal from "sweetalert2";
 
 class Login extends Component {
   constructor(props) {
@@ -27,6 +28,10 @@ class Login extends Component {
     });
     console.log(this.state.form);
   };
+
+  peticionPost = async (e) =>{
+    
+  }
 
   render() {
     const { form } = this.state;
@@ -76,7 +81,7 @@ class Login extends Component {
             </Card.Body>
             <Card.Footer>
               <div className="d-flex justify-content-center">
-                <Button className="boton d-flex justify-content-center">
+                <Button className="boton d-flex justify-content-center" /* onClick={()=>this.peticionPost()} */>
                   <LoginIcon />
                   <span className="texto-boton">Ingresar</span>
                 </Button>

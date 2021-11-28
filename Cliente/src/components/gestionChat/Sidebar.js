@@ -4,6 +4,7 @@ import { Add } from "@material-ui/icons";
 import LogoutIcon from "@mui/icons-material/Logout";
 import { Button } from "react-bootstrap";
 import CanalEnSidebar from "./CanalEnSidebar";
+import { Tooltip } from "@material-ui/core";
 import firebaseApp from "../../Firebase";
 import {
   getFirestore,
@@ -60,7 +61,6 @@ function Sidebar({ usuarioGlobal, setCanalActivo }) {
           <div className="sidebar__header">
             <h4>Mensajes de usuarios</h4>
           </div>
-          <Add className="sidebar__addChannel" onClick={agregarCanal} />
         </div>
         <div className="sidebar__channelsList">
           {listaCanales
@@ -80,9 +80,13 @@ function Sidebar({ usuarioGlobal, setCanalActivo }) {
           <span className="nombre_usuario">{usuarioGlobal.displayName}</span>
         </div>
         <div className="sidebar__profileIcons">
+          <Tooltip title="Salir"
+            placement="top"
+            arrow> 
           <Button variant="danger" onClick={() => signOut(auth)}>
             <LogoutIcon />
           </Button>
+          </Tooltip>
         </div>
       </div>
     </div>

@@ -4,6 +4,7 @@ import EncabezadoChat from "./EncabezadoChat";
 import Mensaje from "./Mensaje";
 import SendIcon from "@mui/icons-material/Send";
 import firebaseApp from "../../Firebase";
+import { Tooltip } from "@material-ui/core";
 import {
   getFirestore,
   doc,
@@ -37,7 +38,7 @@ function ChatScreen({ canalActivo, usuario }) {
     e.preventDefault();
     const docuRef = doc(
       firestore,
-      `canales/${canalActivo}/mensajes/${new Date().getTime()}`
+      `canales/${canalActivo}/${new Date().getTime()}`
     );
 
     const mensajeFiltrado = filtrarContenido(inputMensaje);
@@ -59,7 +60,7 @@ function ChatScreen({ canalActivo, usuario }) {
 
     const coleccionRef = collection(
       firestore,
-      `canales/${canalActivo}/mensajes`
+      `canales/${canalActivo}/`
     );
     const mensajesJeroglificos = await getDocs(coleccionRef);
     mensajesJeroglificos.forEach((mensaje) => {
@@ -101,6 +102,7 @@ function ChatScreen({ canalActivo, usuario }) {
                 />
               </Col>
               <Col sm={2} align="right">
+              <Tooltip title="Enviar mensaje" placement="top" arrow>
                 <Button
                   disabled={canalActivo ? false : true}
                   className="chat__inputButton"
@@ -108,6 +110,7 @@ function ChatScreen({ canalActivo, usuario }) {
                 >
                   <SendIcon />
                 </Button>
+                </Tooltip>
               </Col>
             </Row>
           </form>

@@ -11,6 +11,7 @@ import {
   collection,
   getDocs,
 } from "firebase/firestore";
+import { Tooltip } from "@material-ui/core";
 
 const firestore = getFirestore(firebaseApp);
 
@@ -90,13 +91,15 @@ function ChatScreen({ canalActivo, usuario }) {
                 />
               </Col>
               <Col sm={2} align="right">
-                <Button
-                  disabled={canalActivo ? false : true}
-                  className="chat__inputButton"
-                  type="submit"
-                >
-                  <SendIcon />
-                </Button>
+                <Tooltip title="Enviar mensaje" placement="top" arrow>
+                  <Button
+                    disabled={canalActivo ? false : true}
+                    className="chat__inputButton"
+                    type="submit"
+                  >
+                    <SendIcon />
+                  </Button>
+                </Tooltip>
               </Col>
             </Row>
           </form>
